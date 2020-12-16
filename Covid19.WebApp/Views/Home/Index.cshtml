@@ -1,0 +1,206 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/lib/leaflet/leaflet.min.css" />
+    <link rel="stylesheet" href="~/lib/leaflet-fullscreen/Control.FullScreen.css" />
+    <style type="text/css">
+        #map {
+            height: 800px;
+            margin: 20px 20px 0 0;
+        }
+    </style>
+}
+@section Scripts {
+    <script type="text/javascript" src="~/lib/jquery-csv/jquery.csv.min.js"></script>
+    <script type="text/javascript" src="~/lib/leaflet/leaflet.min.js"></script>
+    <script type="text/javascript" src="~/lib/leaflet-fullscreen/Control.FullScreen.min.js"></script>
+    <script type="text/javascript">
+        (function (L, document) {
+            var currentPosition = new L.LatLng(38.23381, 23.727539);
+
+            var map = L.map('map', {
+                center: currentPosition,
+                zoom: 7,
+                editable: true,
+                fullscreenControl: true,
+                fullscreenControlOptions: {
+                    position: 'topleft'
+                }
+            });
+
+            // create the tile layer
+            var osmLayer = new L.TileLayer(
+                'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                minZoom: 5,
+                maxZoom: 15,
+                attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // create Google tile layer
+            //var googleLayer = L.tileLayer(
+            //    'https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}?hl=el', {
+            //    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+            //    attribution: 'Map data &copy; Google Maps'
+            //}).addTo(map);
+
+            // counties layer
+            var dataLayer = new L.geoJson(null, {
+                style: function (f) {
+
+                    let themes = ['#ffdbdb', '#ffb6b6', '#ff9292', '#ff6d6d', '#ff4949', '#ff2424', '#ff0000'];
+                    let color = '#33a02c';
+
+                    if (f.properties.new_cases) {
+                        const new_cases = f.properties.new_cases;
+                        const ratio = f.properties.new_cases / f.properties.pop_11 * 10000.0;
+
+                        switch (true) {
+                            case (ratio == 0.0):
+                                color = '#33a02c';
+                                break;
+                            case (ratio < 0.2):
+                                color = themes[0];
+                                break;
+                            case (ratio < 0.4):
+                                color = themes[1];
+                                break;
+                            case (ratio < 0.6):
+                                color = themes[2];
+                                break;
+                            case (ratio < 0.8):
+                                color = themes[3];
+                                break;
+                            case (ratio < 1.0):
+                                color = themes[4];
+                                break;
+                            default:
+                                color = themes[6];
+                                break;
+                        }
+                    }
+
+                    return {
+                        'color': color,
+                        'weight': 1,
+                        'opacity': 0.8,
+                        'clickable': false
+                    };
+                },
+                onEachFeature: function (f, l) {
+                    f.layer = l;
+
+                    var label = f.properties.county;
+                    let ratio = f.properties.new_cases / f.properties.pop_11 * 10000.0;
+                    if (f.properties.pop_11) {
+                        label = '<strong>' + f.properties.county + '</strong>'
+                            + '<br/>Πληθυσμός: ' + parseInt(f.properties.pop_11.toString())
+                            + '<br/>Κρούσματα: ' + parseInt(f.properties.new_cases.toString())
+                            + '<br/>λ: ' + ratio.toFixed(2);
+                    }
+                    l.bindTooltip(label, { opacity: 0.8, direction: 'center', className: 'layer-label' });
+
+                    label = '<p><strong>Διαθεσιμότητα όλων των υπηρεσιών.</strong></p>'
+                    if (f.properties.theme) {
+                        label = '<p>' + f.properties.scheduling + '</p>';
+                    }
+                    //l.bindPopup(function () {
+                    //    return label;
+                    //});
+                }
+            }).addTo(map);
+
+            // requests layer
+            var geoJsonLayer = new L.geoJson(null, {
+                pointToLayer: function (f, latlng) {
+                    var tooltip = '<span>' + f.properties.address + '</span>';
+
+                    return new L.marker(latlng, {
+                        icon: L.AwesomeMarkers.icon({
+                            icon: 'home',
+                            markerColor: 'orange',
+                            prefix: 'fa'
+                        })
+                    }).bindTooltip(tooltip, { permanent: false });
+                },
+                onEachFeature: function (f, l) {
+                    f.layer = l;
+
+                    var tooltip = '<div class="text-center">' +
+                        '<p><strong>' + f.properties.address + '</strong></p>' +
+                        '<p><a class="btn btn-primary" href="@Url.Action("CustomerReport", "License")/' + f.properties.id + '"><i class="fa fa-pencil-square-o"></i> Υπόμνημα</a></p>' +
+                        '</div>';
+
+                    l.bindPopup(function () {
+                        return tooltip;
+                    });
+                }
+            }).addTo(map);
+
+            // load reguests features
+            //$.ajax({
+            //    type: "GET",
+            //    url: '/api/values',
+            //    dataType: 'json'
+            //}).done(function (data, status, jqXHR) {
+            //    geoJsonLayer.clearLayers();
+            //    geoJsonLayer.addData(data);
+            //}).fail(function (jqXHR, status, error) {
+            //    console.log(status + ' - ' + error);
+            //});
+
+            $.when(
+                $.getJSON('/data/nomoi.json'),
+                $.get('https://raw.githubusercontent.com/iMEdD-Lab/open-data/master/COVID-19/greece_latest.csv')
+            ).then(function (result1, result2) {
+                let coviddata = $.csv.toObjects(result2[0]);
+
+                for (let i = 0; i < result1[0].features.length; i++) {
+                    let foundIndex = coviddata.findIndex(function (l) {
+                        return parseInt(l.pop_11.toString()) === result1[0].features[i].properties.pop_11;
+                    });
+                    if (foundIndex >= 0) {
+                        Object.assign(result1[0].features[i].properties, coviddata[foundIndex]);
+                    }
+                }
+
+                dataLayer.clearLayers();
+                dataLayer.addData(result1[0].features);
+            });
+
+
+        })(window.L, window.document);
+    </script>
+}
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<div class="">
+    <div class="">
+        <h2>Covid-19</h2>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h4>Μια νέα Φάση, των περαιτέρω ποιοτικών ελέγχων, επέκτασης και αναβάθμισης των υπηρεσιών μας αρχίζει σύντομα.<br />Για να προσφέρουμε σε κάθε επαγγελματία, υπηρεσίες που χρειάζεται και του αξίζουν!</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="map"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <p>&nbsp;</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

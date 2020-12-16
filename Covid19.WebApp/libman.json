@@ -1,0 +1,81 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "leaflet@1.7.1",
+      "destination": "wwwroot/lib/leaflet/",
+      "files": [
+        "leaflet-src.js",
+        "leaflet-src.js.map",
+        "leaflet-src.min.js",
+        "leaflet.css",
+        "leaflet.js",
+        "leaflet.js.map",
+        "leaflet.min.css",
+        "leaflet.min.js",
+        "images/layers-2x.png",
+        "images/layers.png",
+        "images/marker-icon-2x.png",
+        "images/marker-icon.png",
+        "images/marker-shadow.png"
+      ]
+    },
+    {
+      "library": "leaflet.fullscreen@1.6.0",
+      "destination": "wwwroot/lib/leaflet-fullscreen/",
+      "files": [
+        "Control.FullScreen.css",
+        "Control.FullScreen.js",
+        "Control.FullScreen.min.js",
+        "Control.FullScreen.min.js.map",
+        "icon-fullscreen-2x.png",
+        "icon-fullscreen.png"
+      ]
+    },
+    {
+      "library": "leaflet-locatecontrol@0.72.0",
+      "destination": "wwwroot/lib/leaflet-locatecontrol/",
+      "files": [
+        "L.Control.Locate.css",
+        "L.Control.Locate.css.map",
+        "L.Control.Locate.mapbox.css",
+        "L.Control.Locate.mapbox.css.map",
+        "L.Control.Locate.mapbox.min.css",
+        "L.Control.Locate.mapbox.min.css.map",
+        "L.Control.Locate.min.css",
+        "L.Control.Locate.min.css.map",
+        "L.Control.Locate.min.js",
+        "L.Control.Locate.min.js.map"
+      ]
+    },
+    {
+      "library": "font-awesome@4.7.0",
+      "destination": "wwwroot/"
+    },
+    {
+      "library": "Leaflet.awesome-markers@2.0.2",
+      "destination": "wwwroot/lib/leaflet-sawesome-markers/",
+      "files": [
+        "leaflet.awesome-markers.min.js",
+        "leaflet.awesome-markers.css",
+        "leaflet.awesome-markers.js",
+        "images/markers-matte.png",
+        "images/markers-matte@2x.png",
+        "images/markers-plain.png",
+        "images/markers-shadow.png",
+        "images/markers-shadow@2x.png",
+        "images/markers-soft.png",
+        "images/markers-soft@2x.png"
+      ]
+    },
+    {
+      "library": "jquery-csv@1.0.11",
+      "destination": "wwwroot/lib/jquery-csv/",
+      "files": [
+        "jquery.csv.min.js",
+        "jquery.csv.js"
+      ]
+    }
+  ]
+}
