@@ -38,12 +38,6 @@
                 attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
             }).addTo(map);
 
-            // create Google tile layer
-            //var googleLayer = L.tileLayer(
-            //    'https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}?hl=el', {
-            //    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-            //    attribution: 'Map data &copy; Google Maps'
-            //}).addTo(map);
 
             // counties layer
             var dataLayer = new L.geoJson(null, {
@@ -54,7 +48,7 @@
 
                     if (f.properties.new_cases) {
                         const new_cases = f.properties.new_cases;
-                        const ratio = f.properties.new_cases / f.properties.pop_11 * 10000.0;
+                        const ratio = new_cases / f.properties.pop_11 * 10000.0;
 
                         switch (true) {
                             case (ratio == 0.0):
@@ -105,9 +99,6 @@
                     if (f.properties.theme) {
                         label = '<p>' + f.properties.scheduling + '</p>';
                     }
-                    //l.bindPopup(function () {
-                    //    return label;
-                    //});
                 }
             }).addTo(map);
 
@@ -137,18 +128,6 @@
                     });
                 }
             }).addTo(map);
-
-            // load reguests features
-            //$.ajax({
-            //    type: "GET",
-            //    url: '/api/values',
-            //    dataType: 'json'
-            //}).done(function (data, status, jqXHR) {
-            //    geoJsonLayer.clearLayers();
-            //    geoJsonLayer.addData(data);
-            //}).fail(function (jqXHR, status, error) {
-            //    console.log(status + ' - ' + error);
-            //});
 
             $.when(
                 $.getJSON('/data/nomoi.json'),
