@@ -48,6 +48,11 @@ namespace Covid19.WebApp.Controllers
             return View();
         }
 
+        public IActionResult searh()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

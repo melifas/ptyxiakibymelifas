@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/leaflet/leaflet.min.css" />
     <link href="~/css/Leaflet.PolylineMeasure.css" rel="stylesheet" />
     <link href="~/css/L.Control.Sidebar.css" rel="stylesheet" />
+    <link href="~/css/leaflet-search.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/leaflet-fullscreen/Control.FullScreen.css" />
     <style type="text/css">
         #map {
@@ -27,7 +28,6 @@
             text-align: center;
             background-color: darksalmon;
         }
-       
     </style>
 }
 
@@ -38,6 +38,8 @@
     <script type="text/javascript" src="~/lib/leaflet-fullscreen/Control.FullScreen.min.js"></script>
     <script src="~/js/leaflet.ajax.min.js"></script>
     <script src="~/lib/leaflet/plugins/L.Control.Sidebar.js"></script>
+    <script src="~/lib/leaflet/plugins/leaflet-search.js"></script>
+    <script src="~/lib/leaflet/plugins/leaflet-search-geocoder.js"></script>
     <script src="~/lib/leaflet/plugins/Leaflet.PolylineMeasure.js"></script>
     <script src="~/lib/leaflet/plugins/leaflet-providers.js"></script>
     <script type="text/javascript">
@@ -77,12 +79,48 @@
             layerGraves = L.geoJSON.ajax('/data/agiosstefanos.json', { style: styleClientLinears, onEachFeature: processClientLinears, filter: filteredLayer }).addTo(mymap);
             layerTotalGraves = L.geoJSON.ajax('/data/agiosstefanos.json', { style: styleClientLinears, onEachFeature: processClientLinears }).addTo(mymap);
 
-            @*layerGraves.on('click',
-                function(e) {
-                    sidebar.toggle();
-                    var name = e.target.feature.properties.OID_;
-                     $(".nome").innerHTML = "Name: " + name;
-                });*@
+            
+             var searchControl = new L.Control.Search({
+                layer: layerTotalGraves,
+                propertyName: 'name',
+                marker: false,
+                moveToLocation: function(latlng, title, map) {
+                    //map.fitBounds( latlng.layer.getBounds() );
+                    var zoom = map.getBoundsZoom(latlng.layer.getBounds());
+                    map.setView(latlng, zoom); // access the zoom
+                }
+            });
+
+            searchControl.on('search:locationfound', function(e) {
+		
+                //console.log('search:locationfound', );
+
+                //map.removeLayer(this._markerSearch)
+
+                e.layer.setStyle({fillColor: '#3f0', color: '#0f0'});
+                if(e.layer._popup)
+                    e.layer.openPopup();
+
+            }).on('search:collapsed', function(e) {
+
+                layerTotalGraves.eachLayer(function(layer) {	//restore feature color
+                    layerTotalGraves.resetStyle(layer);
+                });	
+            });
+	
+            mymap.addControl( searchControl );  //inizialize search control
+
+
+            @*var controlSearch = new L.Control.Search({
+                position:'topright',		
+                layer: layerTotalGraves,
+                initial: false,
+                zoom: 12,
+                marker: false
+            });
+
+            mymap.addControl( controlSearch );*@
+
 
             objOverlays = { "Graves not In Use ": layerGraves, "Total Graves Capacity ": layerTotalGraves };
             ctrLayers = L.control.layers(objBaseMaps, objOverlays).addTo(mymap);
@@ -200,7 +238,7 @@
 
     <p><b>Εικόνα Τάφου </b></p>
 
-    <img src="~/foto/test.jpg" width ="400" height ="300" />
+    <img src="~/foto/test.jpg" width="400" height="300" />
 
     <ul>
         <li><a href="listing-markers.html">listing-markers example</a></li>
@@ -219,7 +257,7 @@
 <div id="map"></div>
 
 <div id="search-sidebar" class="col-md-3">
-    <button id="btnLocate" class="btn btn-primary btn-block">Locate</button><br/>
+    <button id="btnLocate" class="btn btn-primary btn-block">Locate</button><br />
     <div id="divProject" class="col-xs-12">
         <div id="divProjectLabel" class="text-center col-xs-12">
             <h4>Graves</h4>
@@ -227,7 +265,7 @@
         <div id="divProjectError" class="errorMsg col-xs-12"></div>
         <div id="divFindProject" class="form-group">
             <div class="col-xs-6">
-                <input type="text" id="txtFindProject" class="form-control" placeholder="Αριθμός Τάφου"/>
+                <input type="text" id="txtFindProject" class="form-control" placeholder="Αριθμός Τάφου" />
             </div>
             <div class="col-xs-6">
                 <button id="btnFindProject" class="btn btn-primary btn-block">Εύρεση Τάφου</button>
