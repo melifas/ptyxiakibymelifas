@@ -34,6 +34,7 @@
 
 @section Scripts {
     <script type="text/javascript" src="~/lib/jquery-csv/jquery.csv.min.js"></script>
+    <script src="https://use.fontawesome.com/6024ab1387.js"></script>
     <script type="text/javascript" src="~/lib/leaflet/leaflet.min.js"></script>
     <script type="text/javascript" src="~/lib/leaflet/leaflet.js"></script>
     <script type="text/javascript" src="~/lib/leaflet-fullscreen/Control.FullScreen.min.js"></script>
@@ -63,7 +64,7 @@
         var lyrSearch;
 
         $(document).ready(function() {
-            mymap = L.map('map', { center: currentPosition, zoom: 13, editable: true, fullscreenControl: true });
+            mymap = L.map('map', { center: currentPosition, zoom: 9, editable: true, fullscreenControl: true });
 
             lyrOSM = L.tileLayer('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',
                 {
@@ -85,7 +86,7 @@
 
             ctlSidebar = L.control.sidebar('search-sidebar').addTo(mymap);
 
-            ctlEasybutton = L.easyButton('glyphicon-transfer', function () {
+            ctlEasybutton = L.easyButton('fa fa-search', function () {
                 ctlSidebar.toggle();
             }).addTo(mymap);
 
@@ -171,7 +172,7 @@
                     lyrSearch.remove();
                 }
                 lyrSearch = L.geoJSON(lyr.toGeoJSON(), { style: { color: 'red', weight: 10, opacity: 0.5 } }).addTo(mymap);
-                mymap.fitBounds(lyr.getBounds().pad(1));
+                mymap.fitBounds(lyr.getBounds().pad(5));
                 var att = lyr.feature.properties;
                 $("#divProjectData").html("Τάφος : " + att.OID_);
             } else {
@@ -230,7 +231,7 @@
     <button id="btnLocate" class="btn btn-primary btn-block">Αναζήτηση Τάφων</button><br />
     <div id="divProject">
         <div id="divProjectLabel" class="text-center">
-            <h4>Graves</h4>
+            <h4>Τάφος</h4>
         </div>
         <div id="divProjectError" class="errorMsg"></div>
         <div id="divFindProject" class="form-group">
