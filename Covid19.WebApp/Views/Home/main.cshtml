@@ -7,11 +7,27 @@
     <link rel="stylesheet" href="~/lib/leaflet/leaflet.min.css" />
     <link href="~/css/Leaflet.PolylineMeasure.css" rel="stylesheet" />
     <link href="~/css/L.Control.Sidebar.css" rel="stylesheet" />
+    <link href="~/css/L.Control.Sidebar.css" rel="stylesheet" />
+    <link href="~/css/easy-button.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/leaflet-fullscreen/Control.FullScreen.css" />
     <style type="text/css">
         #map {
             height: 800px;
             margin: 20px 20px 0 0;
+        }
+
+        .col-xs-12, .col-xs-12, .col-xs-4 {
+            padding: 3px;
+        }
+
+        #divProject {
+            background-color: beige;
+        }
+
+        .errorMsg {
+            padding: 0;
+            text-align: center;
+            background-color: darksalmon;
         }
     </style>
 }
@@ -23,6 +39,8 @@
     <script type="text/javascript" src="~/lib/leaflet-fullscreen/Control.FullScreen.min.js"></script>
     <script src="~/js/leaflet.ajax.min.js"></script>
     <script src="~/lib/leaflet/plugins/L.Control.Sidebar.js"></script>
+    <script src="~/lib/leaflet/plugins/L.Control.Sidebar.js"></script>
+    <script src="~/lib/leaflet/plugins/easy-button.js"></script>
     <script src="~/lib/leaflet/plugins/Leaflet.PolylineMeasure.js"></script>
     <script src="~/lib/leaflet/plugins/leaflet-providers.js"></script>
     <script type="text/javascript">
@@ -40,6 +58,9 @@
         var ctrLayers;
         var objBaseMaps;
         var sideBar;
+        var ctlSidebar;
+        var ctlEasybutton;
+        var lyrSearch;
 
         $(document).ready(function() {
             mymap = L.map('map', { center: currentPosition, zoom: 13, editable: true, fullscreenControl: true });
@@ -61,6 +82,12 @@
             layerGraves = L.geoJSON.ajax('/data/agiosstefanosfinal.json', { style: styleClientLinears, onEachFeature: processClientLinears, filter: filteredLayer }).addTo(mymap);
             layerTotalGraves = L.geoJSON.ajax('/data/agiosstefanosfinal.json', { style: styleClientLinears, onEachFeature: processClientLinears }).addTo(mymap);
 
+
+            ctlSidebar = L.control.sidebar('search-sidebar').addTo(mymap);
+
+            ctlEasybutton = L.easyButton('glyphicon-transfer', function () {
+                ctlSidebar.toggle();
+            }).addTo(mymap);
 
 
              @*layerGraves.on('click',
@@ -119,7 +146,38 @@
             }
         }
 
+        //***********************Search Functions**************
 
+        function returnGraveById(id) {
+
+            var aLayers = layerTotalGraves.getLayers();
+
+            for (var i = 0; i < aLayers.length - 1; i++) {
+                var featureId = aLayers[i].feature.properties.OID_;
+                if (featureId == id) {
+                    return aLayers[i];
+                }
+            }
+            return false;
+        }
+
+
+        $("#btnFindProject").click(function () {
+            var id = $("#txtFindProject").val();
+            console.log(id);
+            var lyr = returnGraveById(id);
+            if (lyr) {
+                if (lyrSearch) {
+                    lyrSearch.remove();
+                }
+                lyrSearch = L.geoJSON(lyr.toGeoJSON(), { style: { color: 'red', weight: 10, opacity: 0.5 } }).addTo(mymap);
+                mymap.fitBounds(lyr.getBounds().pad(1));
+                var att = lyr.feature.properties;
+                $("#divProjectData").html("Τάφος : " + att.OID_);
+            } else {
+                $("#divProjectError").html("Ο τάφος δεν βράθηκε");
+            }
+        });
 
 
     </script>
@@ -167,3 +225,22 @@
 </div>
 
 <div id="map"></div>
+
+<div id="search-sidebar">
+    <button id="btnLocate" class="btn btn-primary btn-block">Αναζήτηση Τάφων</button><br />
+    <div id="divProject">
+        <div id="divProjectLabel" class="text-center">
+            <h4>Graves</h4>
+        </div>
+        <div id="divProjectError" class="errorMsg"></div>
+        <div id="divFindProject" class="form-group">
+            <div>
+                <input type="text" id="txtFindProject" class="form-control" placeholder="Αριθμός Τάφου" />
+            </div>
+            <div>
+                <button id="btnFindProject" class="btn btn-primary btn-block">Εύρεση Τάφου</button>
+            </div>
+        </div>
+        <div class="" id="divProjectData"></div>
+    </div>
+</div>

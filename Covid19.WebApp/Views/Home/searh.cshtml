@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="~/lib/leaflet/leaflet.min.css" />
     <link href="~/css/Leaflet.PolylineMeasure.css" rel="stylesheet" />
     <link href="~/css/L.Control.Sidebar.css" rel="stylesheet" />
+    <link href="~/css/L.Control.Zoomslider.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/easy-button.css" rel="stylesheet" />
     <link href="~/css/leaflet-search.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/leaflet-fullscreen/Control.FullScreen.css" />
     <style type="text/css">
@@ -38,8 +41,10 @@
     <script type="text/javascript" src="~/lib/leaflet-fullscreen/Control.FullScreen.min.js"></script>
     <script src="~/js/leaflet.ajax.min.js"></script>
     <script src="~/lib/leaflet/plugins/L.Control.Sidebar.js"></script>
+    <script src="~/lib/leaflet/plugins/L.Control.Zoomslider.js"></script>
     <script src="~/lib/leaflet/plugins/leaflet-search.js"></script>
     <script src="~/lib/leaflet/plugins/leaflet-search-geocoder.js"></script>
+    <script src="~/lib/leaflet/plugins/easy-button.js"></script>
     <script src="~/lib/leaflet/plugins/Leaflet.PolylineMeasure.js"></script>
     <script src="~/lib/leaflet/plugins/leaflet-providers.js"></script>
     <script type="text/javascript">
@@ -58,6 +63,8 @@
         var ctrLayers;
         var objBaseMaps;
         var sideBar;
+        var ctlSidebar;
+        var ctlEasybutton;
 
         $(document).ready(function() {
             mymap = L.map('map', { center: currentPosition, zoom: 13, editable: true, fullscreenControl: true });
@@ -78,6 +85,14 @@
 
             layerGraves = L.geoJSON.ajax('/data/agiosstefanos.json', { style: styleClientLinears, onEachFeature: processClientLinears, filter: filteredLayer }).addTo(mymap);
             layerTotalGraves = L.geoJSON.ajax('/data/agiosstefanos.json', { style: styleClientLinears, onEachFeature: processClientLinears }).addTo(mymap);
+
+
+            ctlSidebar = L.control.sidebar('search-sidebar').addTo(mymap);
+
+            ctlEasybutton = L.easyButton('fa-globe', function(){
+                ctlSidebar.toggle(); 
+            }).addTo(mymap);
+
 
             
              var searchControl = new L.Control.Search({

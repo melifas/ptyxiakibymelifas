@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="~/lib/leaflet/leaflet.min.css" />
     <link href="~/css/Leaflet.PolylineMeasure.css" rel="stylesheet" />
     <link href="~/css/L.Control.Sidebar.css" rel="stylesheet" />
+    <link href="~/css/L.Control.Sidebar.css" rel="stylesheet" />
+    <link href="~/css/easy-button.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/leaflet-fullscreen/Control.FullScreen.css" />
     <style type="text/css">
         #map {
@@ -38,6 +40,8 @@
     <script type="text/javascript" src="~/lib/leaflet-fullscreen/Control.FullScreen.min.js"></script>
     <script src="~/js/leaflet.ajax.min.js"></script>
     <script src="~/lib/leaflet/plugins/L.Control.Sidebar.js"></script>
+    <script src="~/lib/leaflet/plugins/L.Control.Sidebar.js"></script>
+    <script src="~/lib/leaflet/plugins/easy-button.js"></script>
     <script src="~/lib/leaflet/plugins/Leaflet.PolylineMeasure.js"></script>
     <script src="~/lib/leaflet/plugins/leaflet-providers.js"></script>
     <script type="text/javascript">
@@ -56,6 +60,7 @@
         var ctrLayers;
         var objBaseMaps;
         var sideBar;
+        var ctlEasybutton;
 
         $(document).ready(function() {
             mymap = L.map('map', { center: currentPosition, zoom: 13, editable: true, fullscreenControl: true });
@@ -76,6 +81,12 @@
 
             layerGraves = L.geoJSON.ajax('/data/agiosstefanos.json', { style: styleClientLinears, onEachFeature: processClientLinears, filter: filteredLayer }).addTo(mymap);
             layerTotalGraves = L.geoJSON.ajax('/data/agiosstefanos.json', { style: styleClientLinears, onEachFeature: processClientLinears }).addTo(mymap);
+
+            ctlSidebar = L.control.sidebar('search-sidebar').addTo(mymap);
+
+            ctlEasybutton = L.easyButton('glyphicon-transfer', function () {
+                ctlSidebar.toggle();
+            }).addTo(mymap);
 
             @*layerGraves.on('click',
                 function(e) {
@@ -129,10 +140,11 @@
         //***********************Search Functions**************
 
         function returnGraveById(id) {
+            
             var aLayers = layerTotalGraves.getLayers();
-            debugger;
+           
             for (var i = 0; i < aLayers.length - 1; i++) {
-                var featureId = aLayers[i].feature.properties.Project;
+                var featureId = aLayers[i].feature.properties.OID_;
                 if (featureId == id) {
                     return aLayers[i];
                 }
@@ -141,8 +153,9 @@
         }
 
 
-        $("btnFindProject").click(function() {
+        $("#btnFindProject").click(function() {
             var id = $("#txtFindProject").val();
+            console.log(id);
             var lyr = returnGraveById(id);
             if (lyr) {
                 if (lyrSearch) {
@@ -151,7 +164,7 @@
                 lyrSearch = L.geoJSON(lyr.toGeoJSON(), { style: { color: 'red', weight: 10, opacity: 0.5 } }).addTo(mymap);
                 mymap.fitBounds(lyr.getBounds().pad(1));
                 var att = lyr.feature.properties;
-                $("divProjectData").html("Tafos " + att.OID_);
+                $("#divProjectData").html("Tafos " + att.OID_);
             } else {
                 $("#divProjectError").html("Grave not Found");
             }
@@ -218,8 +231,28 @@
 
 <div id="map"></div>
 
-<div id="search-sidebar" class="col-md-3">
+<div id="search-sidebar">
     <button id="btnLocate" class="btn btn-primary btn-block">Locate</button><br/>
+    <div id="divProject" >
+        <div id="divProjectLabel" class="text-center">
+            <h4>Graves</h4>
+        </div>
+        <div id="divProjectError" class="errorMsg"></div>
+        <div id="divFindProject" class="form-group">
+            <div>
+                <input type="text" id="txtFindProject" class="form-control" placeholder="Αριθμός Τάφου"/>
+            </div>
+            <div >
+                <button id="btnFindProject" class="btn btn-primary btn-block">Εύρεση Τάφου</button>
+            </div>
+        </div>
+        <div class="" id="divProjectData"></div>
+    </div>
+</div>
+
+
+@*<div id="search-sidebar" class="col-md-3">
+    <button id="btnLocate" class="btn btn-primary btn-block">Locate</button><br />
     <div id="divProject" class="col-xs-12">
         <div id="divProjectLabel" class="text-center col-xs-12">
             <h4>Graves</h4>
@@ -227,7 +260,7 @@
         <div id="divProjectError" class="errorMsg col-xs-12"></div>
         <div id="divFindProject" class="form-group">
             <div class="col-xs-6">
-                <input type="text" id="txtFindProject" class="form-control" placeholder="Αριθμός Τάφου"/>
+                <input type="text" id="txtFindProject" class="form-control" placeholder="Αριθμός Τάφου" />
             </div>
             <div class="col-xs-6">
                 <button id="btnFindProject" class="btn btn-primary btn-block">Εύρεση Τάφου</button>
@@ -235,4 +268,4 @@
         </div>
         <div class="" id="divProjectData"></div>
     </div>
-</div>
+</div>*@
