@@ -1,0 +1,17 @@
+{
+"type": "FeatureCollection",
+"name": "athina",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Id": 1, "Description": "Tafos1", "Status": true }, "geometry": { "type": "Point", "coordinates": [ 23.736263163998082, 37.964559746941994 ] } },
+{ "type": "Feature", "properties": { "Id": 2, "Description": "Tafos2", "Status": true }, "geometry": { "type": "Point", "coordinates": [ 23.736223435782026, 37.9645388090984 ] } },
+{ "type": "Feature", "properties": { "Id": 3, "Description": "Tafos3", "Status": false }, "geometry": { "type": "Point", "coordinates": [ 23.736194444921665, 37.964523776800434 ] } },
+{ "type": "Feature", "properties": { "Id": 4, "Description": "Tafos4", "Status": false }, "geometry": { "type": "Point", "coordinates": [ 23.736172433342499, 37.964510355105823 ] } },
+{ "type": "Feature", "properties": { "Id": 5, "Description": "Tafos5", "Status": true }, "geometry": { "type": "Point", "coordinates": [ 23.736145589953274, 37.964499080882348 ] } },
+{ "type": "Feature", "properties": { "Id": 6, "Description": "Tafos6", "Status": true }, "geometry": { "type": "Point", "coordinates": [ 23.736102103662731, 37.964478143038754 ] } },
+{ "type": "Feature", "properties": { "Id": 7, "Description": "Tafos7", "Status": true }, "geometry": { "type": "Point", "coordinates": [ 23.736100493059379, 37.96434553669598 ] } },
+{ "type": "Feature", "properties": { "Id": 8, "Description": "Tafos8", "Status": false }, "geometry": { "type": "Point", "coordinates": [ 23.73614720055663, 37.964299366066513 ] } },
+{ "type": "Feature", "properties": { "Id": 9, "Description": "Tafos9", "Status": false }, "geometry": { "type": "Point", "coordinates": [ 23.736192834318313, 37.964252121701477 ] } },
+{ "type": "Feature", "properties": { "Id": 10, "Description": "Tafos10", "Status": true }, "geometry": { "type": "Point", "coordinates": [ 23.736240615551132, 37.964201119261951 ] } }
+]
+}

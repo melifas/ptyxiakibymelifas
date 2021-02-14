@@ -1,0 +1,169 @@
+﻿@{
+    ViewData["Title"] = "Αρχική σελίδα";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/lib/leaflet/leaflet.min.css" />
+    <link href="~/css/Leaflet.PolylineMeasure.css" rel="stylesheet" />
+    <link href="~/css/L.Control.Sidebar.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/leaflet-fullscreen/Control.FullScreen.css" />
+    <style type="text/css">
+        #map {
+            height: 800px;
+            margin: 20px 20px 0 0;
+        }
+    </style>
+}
+@section Scripts {
+    <script type="text/javascript" src="~/lib/jquery-csv/jquery.csv.min.js"></script>
+    <script type="text/javascript" src="~/lib/leaflet/leaflet.min.js"></script>
+    <script type="text/javascript" src="~/lib/leaflet-fullscreen/Control.FullScreen.min.js"></script>
+    <script src="~/lib/leaflet/plugins/L.Control.Sidebar.js"></script>
+    <script src="~/lib/leaflet/plugins/Leaflet.PolylineMeasure.js"></script>
+    <script src="~/lib/leaflet/plugins/leaflet-providers.js"></script>
+    <script type="text/javascript">
+
+        var objBaseMaps;
+        var objOverlays;
+        var mymap;
+        var googleTerrainLayer;
+        var dataLayer;
+        var ctrLayers;
+        var ctrlMeasure;
+        var sidebar;
+        var label;
+
+        (function(L, document) {
+            //googlesatellite
+            @*var googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+                maxZoom: 24,
+                subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+            }).addTo(map);*@
+
+            //googlehybrid
+            @*var googleHybrid = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
+                maxZoom: 24,
+                subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+            }).addTo(map);*@
+
+            // create the tile layer. Without that layer no map will appear
+            @*var osmLayer = new L.TileLayer(
+                'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                minZoom: 5,
+                maxZoom: 24,
+                attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+            }).addTo(map);*@
+
+
+            //var currentPosition = new L.LatLng(37.96436536738366, 23.73584189995216);
+            var currentPosition = new L.LatLng(38.144699504115366, 23.857665042524335);
+
+            mymap = L.map('map',
+                {
+                    center: currentPosition,
+                    zoom: 19,
+                    editable: true,
+                    fullscreenControl: true,
+                    fullscreenControlOptions: {
+                        position: 'topleft'
+                    }
+                });
+            googleTerrainLayer = L.tileLayer('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',
+                {
+                    maxZoom: 24,
+                    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+                });
+            dataLayer = new L.geoJson(null,
+                {
+                    style: function(f) {
+                        let themes = ['#780911', '#BE78C2', '#874B8B', '#3A113D', '#ff4949', '#ff2424', '#2C169F'];
+                        //const population = f.properties.POP;
+                        const status = f.properties.OID_;
+
+                        switch (true) {
+                        case (status < 510):
+                            color = themes[2];
+                            break;
+                        default:
+                            color = themes[6];
+                            break;
+                        }
+                        return {
+                            'color': color,
+                            'weight': 4,
+                            'opacity': 0.7,
+                            'clickable': false
+                        };
+                    },
+                    onEachFeature: function(f, l) {
+                        f.layer = l;
+                        label = 'Αρίθμηση Τάφου :' + f.properties.OID_ + '</p>';
+                        //sidebar.setContent('test <b>test</b> test' + label);
+                        l.bindTooltip(label, { opacity: 0.8, direction: 'center', className: 'layer-label' });
+                    }
+                });
+
+            mymap.addLayer(googleTerrainLayer);
+
+
+            ctrlMeasure = L.control.polylineMeasure().addTo(mymap);
+
+
+            sidebar = L.control.sidebar('sidebar', {
+                position: 'left'
+            });
+
+            mymap.addControl(sidebar);
+
+            sidebar.toggle();
+
+
+            objOverlays = { "Active Maps": dataLayer};
+            ctrLayers = L.control.layers(objBaseMaps, objOverlays).addTo(mymap);
+
+
+            $.getJSON('/data/agiosstefanos.json',
+                function(data) {
+                    dataLayer.clearLayers();
+                    dataLayer.addData(data.features);
+                });
+
+
+        })(window.L, window.document);
+    </script>
+}
+<div class="text-center">
+    <h1 class="display-4">Alfaware</h1>
+</div>
+
+<div class="">
+    <div class="">
+        <h2>Simulation</h2>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h4>Visualize Graves</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="sidebar">
+        <h1>leaflet-sidebar</h1>
+    </div>
+
+    <div class="">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="map"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <p>&nbsp;</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -23,6 +23,31 @@ namespace Covid19.WebApp.Controllers
             return View();
         }
 
+        public IActionResult Leaflet()
+        {
+            return View();
+        }
+
+        public IActionResult test()
+        {
+            return View();
+        }
+
+        public IActionResult advanced()
+        {
+            return View();
+        }
+
+        public IActionResult sidebar()
+        {
+            return View();
+        }
+
+        public IActionResult main()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

@@ -1,0 +1,21 @@
+{
+"type": "FeatureCollection",
+"name": "anekrotafeio",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "ogc_fid": 1, "Description": tafos1, "Status": true }, "geometry": { "type": "Point", "coordinates": [ 23.73610380759126, 37.964347410688681 ] } },
+{ "type": "Feature", "properties": { "ogc_fid": 2, "Description": tafos2, "Status": true }, "geometry": { "type": "Point", "coordinates": [ 23.736155852075477, 37.964298453589123 ] } },
+{ "type": "Feature", "properties": { "ogc_fid": 3, "Description": tafos3, "Status": false }, "geometry": { "type": "Point", "coordinates": [ 23.736201280735429, 37.964251260709361 ] } },
+{ "type": "Feature", "properties": { "ogc_fid": 4, "Description": tafos4, "Status": false }, "geometry": { "type": "Point", "coordinates": [ 23.736241416735968, 37.964202744664753 ] } },
+{ "type": "Feature", "properties": { "ogc_fid": 5, "Description": tafos5, "Status": false }, "geometry": { "type": "Point", "coordinates": [ 23.736260823153813, 37.964559558120115 ] } },
+{ "type": "Feature", "properties": { "ogc_fid": 6, "Description": tafos6, "Status": true }, "geometry": { "type": "Point", "coordinates": [ 23.736233918801805, 37.964547208581486 ] } },
+{ "type": "Feature", "properties": { "ogc_fid": 7, "Description": tafos7, "Status": false }, "geometry": { "type": "Point", "coordinates": [ 23.736215835548812, 37.964534859042857 ] } },
+{ "type": "Feature", "properties": { "ogc_fid": 8, "Description": tafos8, "Status": false }, "geometry": { "type": "Point", "coordinates": [ 23.736191136471557, 37.964524273724031 ] } },
+{ "type": "Feature", "properties": { "ogc_fid": 9, "Description": tafos9, "Status": true }, "geometry": { "type": "Point", "coordinates": [ 23.736169083724008, 37.964512806295303 ] } },
+{ "type": "Feature", "properties": { "ogc_fid": 10, "Description": ta, "Status": false }, "geometry": { "type": "Point", "coordinates": [ 23.736146589921507, 37.964499133591829 ] } },
+{ "type": "Feature", "properties": { "ogc_fid": 11, "Description": tafo, "Status": true }, "geometry": { "type": "Point", "coordinates": [ 23.736128065613567, 37.964489871437856 ] } },
+{ "type": "Feature", "properties": { "ogc_fid": 12, "Description": t, "Status": false }, "geometry": { "type": "Point", "coordinates": [ 23.73610777708582, 37.964477080844276 ] } },
+{ "type": "Feature", "properties": { "ogc_fid": 13, "Description": taf, "Status": true }, "geometry": { "type": "Point", "coordinates": [ 23.73608175484371, 37.964464731305647 ] } },
+{ "type": "Feature", "properties": { "ogc_fid": 14, "Description": tw, "Status": false }, "geometry": { "type": "Point", "coordinates": [ 23.736059261041209, 37.96445546915168 ] } }
+]
+}

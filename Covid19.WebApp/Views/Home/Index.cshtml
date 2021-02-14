@@ -1,9 +1,11 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Αρχική σελίδα";
 }
 
 @section Styles {
     <link rel="stylesheet" href="~/lib/leaflet/leaflet.min.css" />
+    <link href="~/css/Leaflet.PolylineMeasure.css" rel="stylesheet" />
+    <link href="~/css/L.Control.Sidebar.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/leaflet-fullscreen/Control.FullScreen.css" />
     <style type="text/css">
         #map {
@@ -16,156 +18,122 @@
     <script type="text/javascript" src="~/lib/jquery-csv/jquery.csv.min.js"></script>
     <script type="text/javascript" src="~/lib/leaflet/leaflet.min.js"></script>
     <script type="text/javascript" src="~/lib/leaflet-fullscreen/Control.FullScreen.min.js"></script>
+    <script src="~/lib/leaflet/plugins/L.Control.Sidebar.js"></script>
+    <script src="~/lib/leaflet/plugins/Leaflet.PolylineMeasure.js"></script>
+    <script src="~/lib/leaflet/plugins/leaflet-providers.js"></script>
     <script type="text/javascript">
-        (function (L, document) {
-            var currentPosition = new L.LatLng(38.23381, 23.727539);
 
-            var map = L.map('map', {
-                center: currentPosition,
-                zoom: 7,
-                editable: true,
-                fullscreenControl: true,
-                fullscreenControlOptions: {
-                    position: 'topleft'
-                }
-            });
-
-            // create the tile layer
-            var osmLayer = new L.TileLayer(
-                'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                minZoom: 5,
-                maxZoom: 15,
-                attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-            }).addTo(map);
+        var sidebar;
+        var mymap;
+        var label;
+        var ctrlMeasure;
+        var objOverlays;
+        var ctrLayers;
+        var objBaseMaps;
 
 
-            // counties layer
-            var dataLayer = new L.geoJson(null, {
-                style: function (f) {
+        (function(L, document) {
+            //var currentPosition = new L.LatLng(37.96436536738366, 23.73584189995216);
+            var currentPosition = new L.LatLng(38.144699504115366, 23.857665042524335);
 
-                    let themes = ['#ffdbdb', '#ffb6b6', '#ff9292', '#ff6d6d', '#ff4949', '#ff2424', '#ff0000'];
-                    let color = '#33a02c';
+            mymap = L.map('map',
+                {
+                    center: currentPosition,
+                    zoom: 19,
+                    editable: true,
+                    fullscreenControl: true,
+                    fullscreenControlOptions: {
+                        position: 'topleft'
+                    }
+                });
 
-                    if (f.properties.new_cases) {
-                        const new_cases = f.properties.new_cases;
-                        const ratio = new_cases / f.properties.pop_11 * 10000.0;
+            var googleTerrainLayer = L.tileLayer('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',
+                {
+                    maxZoom: 24,
+                    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+                });
+
+            mymap.addLayer(googleTerrainLayer);
+
+            // graves layer
+            var dataLayer = new L.geoJson(null,
+                {
+                    style: function(f) {
+                        let themes = ['#780911', '#BE78C2', '#874B8B', '#3A113D', '#ff4949', '#ff2424', '#2C169F'];
+                        //const population = f.properties.POP;
+                        const status = f.properties.OID_;
 
                         switch (true) {
-                            case (ratio == 0.0):
-                                color = '#33a02c';
-                                break;
-                            case (ratio < 0.2):
-                                color = themes[0];
-                                break;
-                            case (ratio < 0.4):
-                                color = themes[1];
-                                break;
-                            case (ratio < 0.6):
-                                color = themes[2];
-                                break;
-                            case (ratio < 0.8):
-                                color = themes[3];
-                                break;
-                            case (ratio < 1.0):
-                                color = themes[4];
-                                break;
-                            default:
-                                color = themes[6];
-                                break;
+                        case (status < 510):
+                            color = themes[2];
+                            break;
+                        default:
+                            color = themes[6];
+                            break;
                         }
+                        return {
+                            'color': color,
+                            'weight': 4,
+                            'opacity': 0.7,
+                            'clickable': false
+                        };
+
+                    },
+                    onEachFeature: function(f, l) {
+                        f.layer = l;
+                        
+                        
+
+                        label = 'Αρίθμηση Τάφου :' + f.properties.OID_ + '</p>';
+
+                        //sidebar.setContent('test <b>test</b> test'+ label);
+                        l.bindTooltip(label, { opacity: 0.8, direction: 'center', className: 'layer-label' });
+
+                        mymap.on('click',
+                            function () {
+                                sidebar.setContent('test <b>test</b> test' + f.properties.OID_);
+                            });
                     }
+                }).addTo(mymap).on('click',
+                function() {
+                    sidebar.toggle();
+                });
 
-                    return {
-                        'color': color,
-                        'weight': 1,
-                        'opacity': 0.8,
-                        'clickable': false
-                    };
-                },
-                onEachFeature: function (f, l) {
-                    f.layer = l;
+            sidebar = L.control.sidebar('sidebar',
+                {
+                    position: 'left'
+                });
 
-                    var label = f.properties.county;
-                    let ratio = f.properties.new_cases / f.properties.pop_11 * 10000.0;
-                    if (f.properties.pop_11) {
-                        label = '<strong>' + f.properties.county + '</strong>'
-                            + '<br/>Πληθυσμός: ' + parseInt(f.properties.pop_11.toString())
-                            + '<br/>Κρούσματα: ' + parseInt(f.properties.new_cases.toString())
-                            + '<br/>λ: ' + ratio.toFixed(2);
-                    }
-                    l.bindTooltip(label, { opacity: 0.8, direction: 'center', className: 'layer-label' });
-
-                    label = '<p><strong>Διαθεσιμότητα όλων των υπηρεσιών.</strong></p>'
-                    if (f.properties.theme) {
-                        label = '<p>' + f.properties.scheduling + '</p>';
-                    }
-                }
-            }).addTo(map);
-
-            // requests layer
-            var geoJsonLayer = new L.geoJson(null, {
-                pointToLayer: function (f, latlng) {
-                    var tooltip = '<span>' + f.properties.address + '</span>';
-
-                    return new L.marker(latlng, {
-                        icon: L.AwesomeMarkers.icon({
-                            icon: 'home',
-                            markerColor: 'orange',
-                            prefix: 'fa'
-                        })
-                    }).bindTooltip(tooltip, { permanent: false });
-                },
-                onEachFeature: function (f, l) {
-                    f.layer = l;
-
-                    var tooltip = '<div class="text-center">' +
-                        '<p><strong>' + f.properties.address + '</strong></p>' +
-                        '<p><a class="btn btn-primary" href="@Url.Action("CustomerReport", "License")/' + f.properties.id + '"><i class="fa fa-pencil-square-o"></i> Υπόμνημα</a></p>' +
-                        '</div>';
-
-                    l.bindPopup(function () {
-                        return tooltip;
-                    });
-                }
-            }).addTo(map);
-
-            $.when(
-                $.getJSON('/data/nomoi.json'),
-                $.get('https://raw.githubusercontent.com/iMEdD-Lab/open-data/master/COVID-19/greece_latest.csv')
-            ).then(function (result1, result2) {
-                let coviddata = $.csv.toObjects(result2[0]);
-
-                for (let i = 0; i < result1[0].features.length; i++) {
-                    let foundIndex = coviddata.findIndex(function (l) {
-                        return parseInt(l.pop_11.toString()) === result1[0].features[i].properties.pop_11;
-                    });
-                    if (foundIndex >= 0) {
-                        Object.assign(result1[0].features[i].properties, coviddata[foundIndex]);
-                    }
-                }
-
-                dataLayer.clearLayers();
-                dataLayer.addData(result1[0].features);
-            });
+            mymap.addControl(sidebar);
 
 
+            objOverlays = { "Active Maps": dataLayer };
+            ctrLayers = L.control.layers(objBaseMaps, objOverlays).addTo(mymap);
+
+
+            ctrlMeasure = L.control.polylineMeasure().addTo(mymap);
+
+            $.getJSON('/data/agiosstefanos.json',
+                function(data) {
+                    dataLayer.clearLayers();
+                    dataLayer.addData(data.features);
+                });
         })(window.L, window.document);
     </script>
 }
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Alfaware</h1>
 </div>
 
 <div class="">
     <div class="">
-        <h2>Covid-19</h2>
+        <h2>Simulation</h2>
     </div>
     <div class="row">
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h4>Μια νέα Φάση, των περαιτέρω ποιοτικών ελέγχων, επέκτασης και αναβάθμισης των υπηρεσιών μας αρχίζει σύντομα.<br />Για να προσφέρουμε σε κάθε επαγγελματία, υπηρεσίες που χρειάζεται και του αξίζουν!</h4>
+                    <h4>Visualize Graves</h4>
                 </div>
             </div>
         </div>
@@ -182,4 +150,8 @@
             </div>
         </div>
     </div>
+</div>
+
+<div id="sidebar">
+    <h1>leaflet-sidebar</h1>
 </div>

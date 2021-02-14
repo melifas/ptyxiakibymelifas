@@ -1,0 +1,169 @@
+﻿@{
+    ViewData["Title"] = "Αρχική σελίδα";
+}
+
+
+@section Styles {
+    <link rel="stylesheet" href="~/lib/leaflet/leaflet.min.css" />
+    <link href="~/css/Leaflet.PolylineMeasure.css" rel="stylesheet" />
+    <link href="~/css/L.Control.Sidebar.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/leaflet-fullscreen/Control.FullScreen.css" />
+    <style type="text/css">
+        #map {
+            height: 800px;
+            margin: 20px 20px 0 0;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script type="text/javascript" src="~/lib/jquery-csv/jquery.csv.min.js"></script>
+    <script type="text/javascript" src="~/lib/leaflet/leaflet.min.js"></script>
+    <script type="text/javascript" src="~/lib/leaflet/leaflet.js"></script>
+    <script type="text/javascript" src="~/lib/leaflet-fullscreen/Control.FullScreen.min.js"></script>
+    <script src="~/js/leaflet.ajax.min.js"></script>
+    <script src="~/lib/leaflet/plugins/L.Control.Sidebar.js"></script>
+    <script src="~/lib/leaflet/plugins/Leaflet.PolylineMeasure.js"></script>
+    <script src="~/lib/leaflet/plugins/leaflet-providers.js"></script>
+    <script type="text/javascript">
+
+
+        var currentPosition = new L.LatLng(38.144699504115366, 23.857665042524335);
+        var mymap;
+        var lyrOSM;
+        var layerFiltered;
+        var layerGraves;
+        var layerTotalGraves;
+        var objOverlays;
+        var ctrlMeasure;
+        var objOverlays;
+        var ctrLayers;
+        var objBaseMaps;
+        var sideBar;
+
+        $(document).ready(function() {
+            mymap = L.map('map', { center: currentPosition, zoom: 13, editable: true, fullscreenControl: true });
+
+            lyrOSM = L.tileLayer('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',
+                {
+                    maxZoom: 24,
+                    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+                });
+            mymap.addLayer(lyrOSM);
+
+            sidebar = L.control.sidebar('sidebar',
+                {
+                    position: 'left'
+                });
+
+            mymap.addControl(sidebar);
+
+            layerGraves = L.geoJSON.ajax('/data/agiosstefanosfinal.json', { style: styleClientLinears, onEachFeature: processClientLinears, filter: filteredLayer }).addTo(mymap);
+            layerTotalGraves = L.geoJSON.ajax('/data/agiosstefanosfinal.json', { style: styleClientLinears, onEachFeature: processClientLinears }).addTo(mymap);
+
+
+
+             @*layerGraves.on('click',
+                function(e) {
+                    sidebar.toggle();
+                    var name = e.target.feature.properties.OID_;
+                     $(".nome").innerHTML = "Name: " + name;
+                });*@
+
+
+            objOverlays = { "Graves not In Use ": layerGraves, "Total Graves Capacity ": layerTotalGraves};
+            ctrLayers = L.control.layers(objBaseMaps, objOverlays).addTo(mymap);
+
+            layerGraves.on('data:loaded',
+                function() {
+                    mymap.fitBounds(layerGraves.getBounds());
+                });
+
+            ctrlMeasure = L.control.polylineMeasure().addTo(mymap);
+
+        });
+
+        function processClientLinears(feature, layer) {
+            layer.bindPopup('Αριθμός Τάφου ' + feature.properties.OID_);
+            layer.on('click', function (e) { openSidebar(e) });
+            layer.on('mouseover', function () { layer.openPopup(); });
+        };
+
+        function openSidebar(selection) {
+            sidebar.toggle();
+            document.getElementById('grave').textContent = selection.target.feature.properties.OID_;
+        }
+
+        function filteredLayer(json) {
+            var att = json.properties;
+            if (att.OID_ < 510) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function processFiltered(json, lyr) {
+            var att = json.properties;
+            label = 'Αρίθμηση Τάφου :' + att.OID_ + '</p>';
+            sidebar.setContent('test <b>test</b> test' + label);
+            lyr.bindTooltip(label);
+        }
+
+        function styleClientLinears(json) {
+            var att = json.properties;
+            if (att.OID_ < 510) {
+                return { color: '#874B8B' };
+            } else {
+                return { color: '#2C169F' };
+            }
+        }
+
+
+
+
+    </script>
+}
+
+<div class="text-center">
+    <h1 class="display-4">Alfaware</h1>
+</div>
+
+<div class="">
+    <div class="">
+        <h2>Simulation</h2>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h4>Visualize Graves</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="map"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <p>&nbsp;</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="sidebar">
+    <h1>Λεπτομέρεις Τάφου </h1>
+
+    <h5><strong>Επιλεγμένος Τάφος : </strong><span id="grave"></span> </h5>
+    <p><b>Εικόνα Τάφου </b></p>
+
+    <img src="~/foto/test.jpg" width="400" height="300" />
+
+</div>
+
+<div id="map"></div>
