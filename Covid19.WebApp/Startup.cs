@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Covid19.WebApp.Areas.Identity;
 
 namespace Covid19.WebApp
 {
