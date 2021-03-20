@@ -48,6 +48,20 @@
     <script type="text/javascript">
 
         var mymap;
+        var mymap;
+        var lyrOSM;
+        var layerFiltered;
+        var layerGraves;
+        var layerTotalGraves;
+        var objOverlays;
+        var ctrlMeasure;
+        var objOverlays;
+        var ctrLayers;
+        var objBaseMaps;
+        var sideBar;
+        var ctlSidebar;
+        var ctlEasybutton;
+        var lyrSearch;
         var dataLayer;
 
 
@@ -75,9 +89,24 @@
                     attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
                 }).addTo(mymap);
 
+            sidebar = L.control.sidebar('sidebar',
+                {
+                    position: 'right'
+                });
+
+            mymap.addControl(sidebar);
+
 
             // counties layer
             dataLayer = L.geoJson(null, { style: styleClientLinears, onEachFeature: process }).addTo(mymap);
+
+
+            ctlSidebar = L.control.sidebar('search-sidebar').addTo(mymap);
+
+            ctlEasybutton = L.easyButton('fa fa-search', function () {
+                ctlSidebar.toggle();
+            }).addTo(mymap);
+
 
 
             $.when(
@@ -161,23 +190,58 @@
             }
         }
 
+        //***********************Search Functions**************
+
+        function returnGraveById(id) {
+
+            var aLayers = dataLayer.getLayers();
+
+            for (var i = 0; i < aLayers.length - 1; i++) {
+                //debugger;
+                var featureId = parseInt(aLayers[i].feature.properties.pop_11).toString();  
+                if (featureId === id) {
+                    return aLayers[i];
+                }
+            }
+            return false;
+        }
+
+
+        $("#btnFindProject").click(function () {
+            var id = $("#txtFindProject").val();
+            //debugger;
+            var lyr = returnGraveById(id);
+            if (lyr) {
+                if (lyrSearch) {
+                    lyrSearch.remove();
+                }
+                lyrSearch = L.geoJSON(lyr.toGeoJSON(), { style: { color: 'red', weight: 10, opacity: 0.5 } }).addTo(mymap);
+                mymap.fitBounds(lyr.getBounds().pad(5));
+                var att = lyr.feature.properties;
+                $("#divProjectData").html("ΠΕ : " + att.pop_11);
+            } else {
+                $("#divProjectError").html("Δεν υπάρχει ΠΕ με αυτό τον πληθυσμό");
+            }
+        });
+
 
     </script>
 }
+
+
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Alfaware</h1>
 </div>
 
 <div class="">
     <div class="">
-        <h2>Covid-19</h2>
+        <h2>Simulation</h2>
     </div>
     <div class="row">
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h4>Μια νέα Φάση, των περαιτέρω ποιοτικών ελέγχων, επέκτασης και αναβάθμισης των υπηρεσιών μας αρχίζει σύντομα.<br />Για να προσφέρουμε σε κάθε επαγγελματία, υπηρεσίες που χρειάζεται και του αξίζουν!</h4>
+                    <h4>Visualize Graves</h4>
                 </div>
             </div>
         </div>
@@ -193,5 +257,36 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<div id="sidebar">
+    <h1>Λεπτομέρεις Τάφου </h1>
+
+    <h5><strong>Επιλεγμένος Τάφος : </strong><span id="grave"></span> </h5>
+    <p><b>Εικόνα Τάφου </b></p>
+
+    <img src="~/foto/test.jpg" width="400" height="300" />
+
+</div>
+
+<div id="map"></div>
+
+<div id="search-sidebar">
+    <button id="btnLocate" class="btn btn-primary btn-block">Αναζήτηση βάση κρουσμάτων</button><br />
+    <div id="divProject">
+        <div id="divProjectLabel" class="text-center">
+            <h4>Κρούσματα</h4>
+        </div>
+        <div id="divProjectError" class="errorMsg"></div>
+        <div id="divFindProject" class="form-group">
+            <div>
+                <input type="text" id="txtFindProject" class="form-control" placeholder="Αριθμός Κρουσμάτων" />
+            </div>
+            <div>
+                <button id="btnFindProject" class="btn btn-primary btn-block">Εύρεση Τάφου</button>
+            </div>
+        </div>
+        <div class="" id="divProjectData"></div>
     </div>
 </div>
