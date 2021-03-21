@@ -1,22 +1,20 @@
-﻿using Covid19.WebApp.Areas.Identity;
+﻿using System;
+using Covid19.WebApp.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-[assembly: HostingStartup(typeof(ConfArch.Web.Areas.Identity.IdentityHostingStartup))]
-namespace ConfArch.Web.Areas.Identity
+[assembly: HostingStartup(typeof(Covid19.WebApp.Areas.Identity.IdentityHostingStartup))]
+namespace Covid19.WebApp.Areas.Identity
 {
     public class IdentityHostingStartup : IHostingStartup
     {
         public void Configure(IWebHostBuilder builder)
         {
-            builder.ConfigureServices((context, services) =>
-            {
-                services.AddTransient<IEmailSender, EmailSender>();
-
+            builder.ConfigureServices((context, services) => {
             });
         }
     }
