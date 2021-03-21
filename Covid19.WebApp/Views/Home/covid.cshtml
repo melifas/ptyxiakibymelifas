@@ -135,11 +135,7 @@
 
         });
 
-
-       
-
-
-        //***********************Functions**************
+        //***********************Functions******************
         function styleClientLinears(f) {
 
             let themes = ['#ffdbdb', '#ffb6b6', '#ff9292', '#ff6d6d', '#ff4949', '#ff2424', '#ff0000'];
@@ -195,27 +191,29 @@
             if (f.properties.theme) {
                 label = '<p>' + f.properties.scheduling + '</p>';
             }
-
-            l.bindPopup('Αριθμός Τάφου ' + f.properties.pop_11);
             l.on('click', function (e) { openSidebar(e) });
-            l.on('mouseover', function () { layer.openPopup(); });
         }
 
         function openSidebar(selection) {
             sidebar.toggle();
-            document.getElementById('grave').textContent = selection.target.feature.properties.pop_11;
+            document.getElementById('name').textContent = selection.target.feature.properties.NAME_GR;
+            document.getElementById('population').textContent = parseInt(selection.target.feature.properties.pop_11);
+            document.getElementById('number').textContent = parseInt(selection.target.feature.properties.new_cases);
+
+
+
         }
 
         //***********************Search Functions**************
 
         function returnGraveById(id) {
-
+            var number = parseInt(id);
             var aLayers = dataLayer.getLayers();
 
             for (var i = 0; i < aLayers.length - 1; i++) {
                 debugger;
-                var featureId = parseInt(aLayers[i].feature.properties.new_cases).toString();  
-                if (featureId > id) {
+                var featureId = parseInt(aLayers[i].feature.properties.new_cases);  
+                if (featureId === number) {
                     return aLayers[i];
                 }
             }
@@ -277,13 +275,11 @@
 </div>
 
 <div id="sidebar">
-    <h1>Λεπτομέρεις Τάφου </h1>
+    <h2>Στοιχεία Περιφερειακής ενότητας </h2>
 
-    <h5><strong>Επιλεγμένος Τάφος : </strong><span id="grave"></span> </h5>
-    <p><b>Εικόνα Τάφου </b></p>
-
-    <img src="~/foto/test.jpg" width="400" height="300" />
-
+    <h5><strong>Όνομα ΠΕ : </strong><span id="name"></span> </h5>
+    <h5><strong>Πληθυσμός : </strong><span id="population"></span> </h5>
+    <h5><strong>Νέα κρούσματα : </strong><span id="number"></span> </h5>
 </div>
 
 <div id="map"></div>
