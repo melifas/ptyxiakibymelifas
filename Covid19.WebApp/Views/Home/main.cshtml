@@ -64,6 +64,7 @@
         var lyrSearch;
 
         $(document).ready(function() {
+
             mymap = L.map('map', { center: currentPosition, zoom: 9, editable: true, fullscreenControl: true });
 
             lyrOSM = L.tileLayer('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',
@@ -71,7 +72,11 @@
                     maxZoom: 24,
                     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
                 });
+
             mymap.addLayer(lyrOSM);
+
+
+            ctlSidebar = L.control.sidebar('search-sidebar').addTo(mymap);
 
             sidebar = L.control.sidebar('sidebar',
                 {
@@ -83,9 +88,6 @@
             layerGraves = L.geoJSON.ajax('/data/agiosstefanosfinal.json', { style: styleClientLinears, onEachFeature: processClientLinears, filter: filteredLayer }).addTo(mymap);
             layerTotalGraves = L.geoJSON.ajax('/data/agiosstefanosfinal.json', { style: styleClientLinears, onEachFeature: processClientLinears }).addTo(mymap);
 
-
-            ctlSidebar = L.control.sidebar('search-sidebar').addTo(mymap);
-
             ctlEasybutton = L.easyButton('fa fa-search', function () {
                 ctlSidebar.toggle();
             }).addTo(mymap);
@@ -95,7 +97,7 @@
                 function(e) {
                     sidebar.toggle();
                     var name = e.target.feature.properties.OID_;
-                     $(".nome").innerHTML = "Name: " + name;
+                     $(".name").innerHTML = "Name: " + name;
                 });*@
 
 
@@ -110,6 +112,9 @@
             ctrlMeasure = L.control.polylineMeasure().addTo(mymap);
 
         });
+
+
+ //*******************************************Region Functions********************************************
 
         function processClientLinears(feature, layer) {
             layer.bindPopup('Αριθμός Τάφου ' + feature.properties.OID_);
