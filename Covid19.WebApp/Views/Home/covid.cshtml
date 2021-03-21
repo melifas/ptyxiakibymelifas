@@ -101,6 +101,11 @@
             dataLayer = L.geoJson(null, { style: styleClientLinears, onEachFeature: process }).addTo(mymap);
 
 
+            dataLayer.on('data:loaded',
+                function () {
+                    mymap.fitBounds(dataLayer.getBounds());
+                });
+
             ctlSidebar = L.control.sidebar('search-sidebar').addTo(mymap);
 
             ctlEasybutton = L.easyButton('fa fa-search', function () {
@@ -130,6 +135,8 @@
 
         });
 
+
+       
 
 
         //***********************Functions**************
@@ -176,7 +183,7 @@
 
         function process(f, l) {
             f.layer = l;
-
+            
             var label = f.properties.county;
             let ratio = f.properties.new_cases / f.properties.pop_11 * 10000.0;
             if (f.properties.pop_11) {
@@ -188,6 +195,15 @@
             if (f.properties.theme) {
                 label = '<p>' + f.properties.scheduling + '</p>';
             }
+
+            l.bindPopup('Αριθμός Τάφου ' + f.properties.pop_11);
+            l.on('click', function (e) { openSidebar(e) });
+            l.on('mouseover', function () { layer.openPopup(); });
+        }
+
+        function openSidebar(selection) {
+            sidebar.toggle();
+            document.getElementById('grave').textContent = selection.target.feature.properties.pop_11;
         }
 
         //***********************Search Functions**************
@@ -197,9 +213,9 @@
             var aLayers = dataLayer.getLayers();
 
             for (var i = 0; i < aLayers.length - 1; i++) {
-                //debugger;
-                var featureId = parseInt(aLayers[i].feature.properties.pop_11).toString();  
-                if (featureId === id) {
+                debugger;
+                var featureId = parseInt(aLayers[i].feature.properties.new_cases).toString();  
+                if (featureId > id) {
                     return aLayers[i];
                 }
             }
@@ -209,7 +225,7 @@
 
         $("#btnFindProject").click(function () {
             var id = $("#txtFindProject").val();
-            //debugger;
+            debugger;
             var lyr = returnGraveById(id);
             if (lyr) {
                 if (lyrSearch) {
@@ -218,9 +234,9 @@
                 lyrSearch = L.geoJSON(lyr.toGeoJSON(), { style: { color: 'red', weight: 10, opacity: 0.5 } }).addTo(mymap);
                 mymap.fitBounds(lyr.getBounds().pad(5));
                 var att = lyr.feature.properties;
-                $("#divProjectData").html("ΠΕ : " + att.pop_11);
+                $("#divProjectData").html("ΠΕ : " + att.NAME_GR);
             } else {
-                $("#divProjectError").html("Δεν υπάρχει ΠΕ με αυτό τον πληθυσμό");
+                $("#divProjectError").html("Δεν υπάρχει ΠΕ με τέτοιο αριθμό κρουσματών");
             }
         });
 
@@ -281,10 +297,10 @@
         <div id="divProjectError" class="errorMsg"></div>
         <div id="divFindProject" class="form-group">
             <div>
-                <input type="text" id="txtFindProject" class="form-control" placeholder="Αριθμός Κρουσμάτων" />
+                <input type="text" id="txtFindProject" class="form-control" placeholder="Εισάγεται αριθμό κρουσμάτων" />
             </div>
             <div>
-                <button id="btnFindProject" class="btn btn-primary btn-block">Εύρεση Τάφου</button>
+                <button id="btnFindProject" class="btn btn-primary btn-block">Εύρεση ΠΕ</button>
             </div>
         </div>
         <div class="" id="divProjectData"></div>
