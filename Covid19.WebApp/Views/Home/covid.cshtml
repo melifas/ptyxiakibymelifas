@@ -233,6 +233,10 @@
                 mymap.fitBounds(lyr.getBounds().pad(5));
                 var att = lyr.feature.properties;
                 $("#divProjectData").html("ΠΕ : " + att.NAME_GR);
+                $("#divClearLayer").click(function () {
+                    lyrSearch.clearLayers();
+                })
+                divClearLayer
             } else {
                 $("#divProjectError").html("Δεν υπάρχει ΠΕ με τέτοιο αριθμό κρουσματών");
             }
@@ -300,5 +304,8 @@
             </div>
         </div>
         <div class="" id="divProjectData"></div>
+        <div>
+            <button id="divClearLayer" class="btn btn-primary btn-block">Καθαρισμός επιλογής</button>
+        </div>
     </div>
 </div>
