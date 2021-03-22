@@ -112,7 +112,8 @@
                 ctlSidebar.toggle();
             }).addTo(mymap);
 
-
+            objOverlays = { "Enable Layer": dataLayer };
+            ctrLayers = L.control.layers(objBaseMaps, objOverlays).addTo(mymap);
 
             $.when(
                 $.getJSON('/data/nomoi.json'),
