@@ -74,28 +74,34 @@ namespace Covid19.WebApp.Controllers
             if (ModelState.IsValid)
             {
                 var user = new IdentityUser() { UserName = model.Email };
+
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                    var link = Url.Action(nameof(VerifyMail), "Account", new {userId = user.Id, token}, Request.Scheme, Request.Host.ToString());
+                    var link = Url.Action(nameof(VerifyMail), "Account", new {userId = user.Id, token = token}, Request.Scheme, Request.Host.ToString());
 
-                   await _mailService.SendEmailAsync(model.Email, "Verify your Account", $"<a href=\"{link}\">Verify email</a>");
+                    await _mailService.SendEmailAsync(model.Email, "Verify your Account", $"<a href=\"{link}\">Verify email</a>");
 
-                    return RedirectToAction(nameof(EmailVerification));
+                    return View("EmailVerification");
                 }
                 return View("Error");
             }
             return View(model);
         }
 
-
+        [AllowAnonymous]
         public async Task<IActionResult> VerifyMail(string userId, string token)
         {
 
             var user = await _userManager.FindByIdAsync(userId);
+
+            if (user==null || token==null) 
+            {
+                return BadRequest();
+            }
 
             var result = await _userManager.ConfirmEmailAsync(user, token);
 
@@ -106,8 +112,6 @@ namespace Covid19.WebApp.Controllers
 
             return View("Error");
         }
-
-        public IActionResult EmailVerification() => View();
 
         [HttpPost]
         public async Task<IActionResult> Logout()
