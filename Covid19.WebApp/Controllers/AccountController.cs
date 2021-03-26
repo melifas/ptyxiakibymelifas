@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Covid19.WebApp.Services;
 using Covid19.WebApp.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -14,12 +15,14 @@ namespace Covid19.WebApp.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IMailService _mailService;
 
         public AccountController(UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager, IMailService mailService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _mailService = mailService;
         }
 
         [AllowAnonymous]
@@ -56,7 +59,8 @@ namespace Covid19.WebApp.Controllers
             return View(loginViewModel);
         }
 
-
+        [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
@@ -64,20 +68,46 @@ namespace Covid19.WebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(LoginViewModel loginViewModel)
+        [AllowAnonymous]
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser() { UserName = loginViewModel.UserName };
-                var result = await _userManager.CreateAsync(user, loginViewModel.Password);
+                var user = new IdentityUser() { UserName = model.Email };
+                var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                    var link = Url.Action(nameof(VerifyMail), "Account", new {userId = user.Id, token}, Request.Scheme, Request.Host.ToString());
+
+                   await _mailService.SendEmailAsync(model.Email, "Verify your Account", $"<a href=\"{link}\">Verify email</a>");
+
+                    return RedirectToAction(nameof(EmailVerification));
                 }
+                return View("Error");
             }
-            return View(loginViewModel);
+            return View(model);
         }
+
+
+        public async Task<IActionResult> VerifyMail(string userId, string token)
+        {
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+
+            if (result.Succeeded)
+            {
+                return View();
+            }
+
+            return View("Error");
+        }
+
+        public IActionResult EmailVerification() => View();
 
         [HttpPost]
         public async Task<IActionResult> Logout()
