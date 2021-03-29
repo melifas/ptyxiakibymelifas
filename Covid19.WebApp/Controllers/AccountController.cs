@@ -7,6 +7,7 @@ using Covid19.WebApp.Services;
 using Covid19.WebApp.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Localization;
 
 namespace Covid19.WebApp.Controllers
 {
@@ -16,6 +17,7 @@ namespace Covid19.WebApp.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IMailService _mailService;
+         
 
         public AccountController(UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager, IMailService mailService)

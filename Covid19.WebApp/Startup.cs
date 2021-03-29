@@ -14,6 +14,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Covid19.WebApp.Models;
 using Covid19.WebApp.Services;
+using Microsoft.AspNetCore.Mvc.Razor;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
 
 namespace Covid19.WebApp
 {
@@ -40,6 +44,29 @@ namespace Covid19.WebApp
                 config.Password.RequireUppercase = false;
                 config.SignIn.RequireConfirmedEmail = true;
             }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+
+            services.AddLocalization(opts => { opts.ResourcesPath = "Localization"; });
+
+            services.AddMvc()
+                .AddViewLocalization(
+                    LanguageViewLocationExpanderFormat.Suffix,
+                    opts => { opts.ResourcesPath = "Localization"; })
+                .AddDataAnnotationsLocalization();
+
+
+            services.Configure<RequestLocalizationOptions>(
+               options =>
+               {
+                   var supportedCultures = new List<CultureInfo>
+                   {
+                        new CultureInfo("gr-GR"),
+                        new CultureInfo("en-US")
+                   };
+
+                   options.DefaultRequestCulture = new RequestCulture("en-US");
+                   options.SupportedCultures = supportedCultures;
+                   options.SupportedUICultures = supportedCultures;
+               });
 
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
 
@@ -68,6 +95,7 @@ namespace Covid19.WebApp
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseRequestLocalization(app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>().Value);
 
             app.UseRouting();
 
