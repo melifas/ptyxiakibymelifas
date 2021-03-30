@@ -9,7 +9,7 @@
 @{
     var requestCulture = Context.Features.Get<IRequestCultureFeature>();
     var cultureItems = ReqLocOptions.Value.SupportedUICultures
-        .Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName })
+        .Select(c => new SelectListItem { Value = c.Name, Text = c.Name })
         .ToList();
 }
 

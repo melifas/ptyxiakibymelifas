@@ -45,12 +45,13 @@ namespace Covid19.WebApp
                 config.SignIn.RequireConfirmedEmail = true;
             }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
-            services.AddLocalization(opts => { opts.ResourcesPath = "Localization"; });
+            services.AddControllersWithViews();
+            services.AddLocalization(opts => { opts.ResourcesPath = "Resources"; });
 
             services.AddMvc()
                 .AddViewLocalization(
                     LanguageViewLocationExpanderFormat.Suffix,
-                    opts => { opts.ResourcesPath = "Localization"; })
+                    opts => { opts.ResourcesPath = "Resources"; })
                 .AddDataAnnotationsLocalization();
 
 
@@ -59,11 +60,11 @@ namespace Covid19.WebApp
                {
                    var supportedCultures = new List<CultureInfo>
                    {
-                        new CultureInfo("gr-GR"),
-                        new CultureInfo("en-US")
+                        new CultureInfo("en"),
+                        new CultureInfo("gr")
                    };
 
-                   options.DefaultRequestCulture = new RequestCulture("en-US");
+                   options.DefaultRequestCulture = new RequestCulture("en");
                    options.SupportedCultures = supportedCultures;
                    options.SupportedUICultures = supportedCultures;
                });
@@ -71,11 +72,7 @@ namespace Covid19.WebApp
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
 
             services.AddTransient<IMailService, MailService>();
-
-            //services.AddIdentity<IdentityUser,IdentityRole>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
-
-            services.AddControllersWithViews();
+            
             services.AddRazorPages();
         }
 
@@ -95,12 +92,20 @@ namespace Covid19.WebApp
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseRequestLocalization(app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>().Value);
-
+            
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+
+            app.UseRequestLocalization(app.ApplicationServices.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
+            //var supportedCultures = new[] { "en", "gr" };
+            //var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
+            //    .AddSupportedCultures(supportedCultures)
+            //    .AddSupportedUICultures(supportedCultures);
+
+            //app.UseRequestLocalization(localizationOptions);
 
             app.UseEndpoints(endpoints =>
             {

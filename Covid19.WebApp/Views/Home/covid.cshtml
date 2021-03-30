@@ -2,6 +2,10 @@
     ViewData["Title"] = "Home Page";
 }
 
+@{
+    @inject IViewLocalizer T
+}
+
 
 @section Styles {
     <link rel="stylesheet" href="~/lib/leaflet/leaflet.min.css" />
@@ -180,7 +184,7 @@
 
         function process(f, l) {
             f.layer = l;
-            
+
             var label = f.properties.county;
             let ratio = f.properties.new_cases / f.properties.pop_11 * 10000.0;
             if (f.properties.pop_11) {
@@ -213,7 +217,7 @@
 
             for (var i = 0; i < aLayers.length - 1; i++) {
                 debugger;
-                var featureId = parseInt(aLayers[i].feature.properties.new_cases);  
+                var featureId = parseInt(aLayers[i].feature.properties.new_cases);
                 if (featureId === number) {
                     return aLayers[i];
                 }
@@ -257,7 +261,7 @@
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h4>Χάρτης υγειονομικής ασφάλειαςαπο την λοίμωξη Covid-19</h4>
+                    <h4>@T["Map"]</h4>
                 </div>
             </div>
         </div>
