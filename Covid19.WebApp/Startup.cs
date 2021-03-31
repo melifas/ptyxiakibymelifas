@@ -61,7 +61,7 @@ namespace Covid19.WebApp
                    var supportedCultures = new List<CultureInfo>
                    {
                         new CultureInfo("en"),
-                        new CultureInfo("gr")
+                        new CultureInfo("el-GR")
                    };
 
                    options.DefaultRequestCulture = new RequestCulture("en");
