@@ -98,15 +98,8 @@ namespace Covid19.WebApp
             app.UseAuthentication();
             app.UseAuthorization();
 
-
             app.UseRequestLocalization(app.ApplicationServices.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
-            //var supportedCultures = new[] { "en", "gr" };
-            //var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
-            //    .AddSupportedCultures(supportedCultures)
-            //    .AddSupportedUICultures(supportedCultures);
-
-            //app.UseRequestLocalization(localizationOptions);
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

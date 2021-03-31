@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
+    @inject IViewLocalizer T
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -21,7 +22,7 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Κεντρική</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@T["Home"]</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
@@ -41,7 +42,9 @@
         <div class="container">
             &copy; 2020 - Covid19.WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-        @await Html.PartialAsync("LanguageSelection")
+        <div class="container">
+            <partial name="LanguageSelection" />
+        </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

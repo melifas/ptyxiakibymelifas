@@ -1,10 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
-@{
-    @inject IViewLocalizer T
-}
+@inject IViewLocalizer T
 
 
 @section Styles {
@@ -188,11 +185,10 @@
             var label = f.properties.county;
             let ratio = f.properties.new_cases / f.properties.pop_11 * 10000.0;
             if (f.properties.pop_11) {
-                label = '<strong>' + f.properties.county + '</strong>' + '<br/>Πληθυσμός: ' + parseInt(f.properties.pop_11.toString()) + '<br/>Κρούσματα: ' + parseInt(f.properties.new_cases.toString()) + '<br/>λ: ' + ratio.toFixed(2);
+                label = '<strong>' + f.properties.county + '</strong>' + '<br/>@T["Population"]: ' + parseInt(f.properties.pop_11.toString()) + '<br/>@T["New Cases"]: ' + parseInt(f.properties.new_cases.toString()) + '<br/>λ: ' + ratio.toFixed(2);
             }
             l.bindTooltip(label, { opacity: 0.8, direction: 'center', className: 'layer-label' });
 
-            label = '<p><strong>Διαθεσιμότητα όλων των υπηρεσιών.</strong></p>'
             if (f.properties.theme) {
                 label = '<p>' + f.properties.scheduling + '</p>';
             }
@@ -243,7 +239,7 @@
                 })
                 divClearLayer
             } else {
-                $("#divProjectError").html("Δεν υπάρχει ΠΕ με τέτοιο αριθμό κρουσματών");
+                $("#divProjectError").html("@T["No result match"]");
             }
         });
 
@@ -253,7 +249,7 @@
 
 
 <div class="text-center">
-    <h1 class="display-4">Covid-19</h1>
+    <h1 class="display-4">@T["Hellenic Territory"]</h1>
 </div>
 
 <div class="">
@@ -261,7 +257,7 @@
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h4>@T["Map"]</h4>
+                    <h4>@T["Covid-19 Dashboard by Region"]</h4>
                 </div>
             </div>
         </div>
@@ -281,33 +277,31 @@
 </div>
 
 <div id="sidebar">
-    <h2>Στοιχεία Περιφερειακής ενότητας </h2>
+    <h2> @T["Region Details"] </h2>
 
-    <h5><strong>Όνομα ΠΕ : </strong><span id="name"></span> </h5>
-    <h5><strong>Πληθυσμός : </strong><span id="population"></span> </h5>
-    <h5><strong>Νέα κρούσματα : </strong><span id="number"></span> </h5>
+    <h5><strong> @T["Region Name "] : </strong><span id="name"></span> </h5>
+    <h5><strong>@T["Population "] </strong><span id="population"></span> </h5>
+    <h5><strong>@T["New Cases "]</strong><span id="number"></span> </h5>
 </div>
 
-<div id="map"></div>
-
 <div id="search-sidebar">
-    <button id="btnLocate" class="btn btn-primary btn-block">Αναζήτηση βάση κρουσμάτων</button><br />
+    <button id="btnLocate" class="btn btn-primary btn-block">@T["Search by cases"]</button><br />
     <div id="divProject">
         <div id="divProjectLabel" class="text-center">
-            <h4>Κρούσματα</h4>
+            <h4>@T["Cases"]</h4>
         </div>
         <div id="divProjectError" class="errorMsg"></div>
         <div id="divFindProject" class="form-group">
             <div>
-                <input type="text" id="txtFindProject" class="form-control" placeholder="Εισάγεται αριθμό κρουσμάτων" />
+                <input type="text" id="txtFindProject" class="form-control" placeholder="@T["Fill new cases"]" />
             </div>
             <div>
-                <button id="btnFindProject" class="btn btn-primary btn-block">Εύρεση ΠΕ</button>
+                <button id="btnFindProject" class="btn btn-primary btn-block">@T["Find region"]</button>
             </div>
         </div>
         <div class="" id="divProjectData"></div>
         <div>
-            <button id="divClearLayer" class="btn btn-primary btn-block">Καθαρισμός επιλογής</button>
+            <button id="divClearLayer" class="btn btn-primary btn-block">@T["Clear selection "]</button>
         </div>
     </div>
 </div>

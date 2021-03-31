@@ -5,6 +5,10 @@
     <UserSecretsId>aspnet-Covid19.WebApp-916EE1AB-AFF1-4B65-AB37-DD9B9DB4B975</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Remove="Resources\Views\Shared\LanguageSelection.el-GR.resx" />
+  </ItemGroup>
+
   
 
   <ItemGroup>
@@ -25,6 +29,10 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\NewFolder\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Resources\Views\Shared\LanguageSelection.el-GR.resx" />
   </ItemGroup>
 
 </Project>
