@@ -5,9 +5,9 @@
 @inject IViewLocalizer T 
 
 
-<h3>Login using an account</h3>
+<h3>@T["Login using an account"]</h3>
 <form asp-controller="Account" asp-action="Login" method="post" class="form-horizontal" role="form">
-    <h4>Enter your details below</h4>
+    <h4>@T["Enter your details below"]</h4>
     <hr />
     <input type="hidden" asp-for="ReturnUrl" />
     <div asp-validation-summary="All" class="text-danger"></div>
@@ -30,7 +30,7 @@
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-primary" value="Log in" />
+            <input type="submit" class="btn btn-primary" value="@T["Log in"]" />
         </div>
     </div>
 

@@ -17,14 +17,17 @@ namespace Covid19.WebApp.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IMailService _mailService;
-         
+        private readonly IHtmlLocalizer<AccountController> _T;
+
 
         public AccountController(UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager, IMailService mailService)
+            SignInManager<IdentityUser> signInManager, IMailService mailService,
+            IHtmlLocalizer<AccountController> T)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _mailService = mailService;
+            _T = T;
         }
 
         [AllowAnonymous]
