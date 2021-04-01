@@ -16,6 +16,7 @@ using Covid19.WebApp.Models;
 using Covid19.WebApp.Services;
 using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
+using BundlerMinifier.TagHelpers;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 
@@ -72,7 +73,12 @@ namespace Covid19.WebApp
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
 
             services.AddTransient<IMailService, MailService>();
-            
+
+            services.AddBundles(options =>
+            {
+                options.AppendVersion = true;
+            });
+
             services.AddRazorPages();
         }
 
