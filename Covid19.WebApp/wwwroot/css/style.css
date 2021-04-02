@@ -6350,13 +6350,13 @@ body.landing-page {
     padding-top: 80px;
     padding-bottom: 90px;
     background-color: #1ab394;
-    background-image: url("../Content/landing/avatar_all.png"); }
+    background-image: url("/landing/avatar_all.png"); }
   .landing-page .big-icon {
     font-size: 56px !important; }
   .landing-page .features .big-icon {
     color: #1ab394 !important; }
   .landing-page .contact {
-    background-image: url("../Content/landing/word_map.png");
+    background-image: url("/landing/word_map.png");
     background-position: 50% 50%;
     background-repeat: no-repeat;
     margin-top: 60px; }
