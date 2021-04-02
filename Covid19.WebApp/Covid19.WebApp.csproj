@@ -6,6 +6,43 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\fonts\font-awesome\css\font-awesome.css" />
+    <Content Remove="wwwroot\fonts\font-awesome\css\font-awesome.min.css" />
+    <Content Remove="wwwroot\fonts\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Remove="wwwroot\fonts\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Remove="wwwroot\fonts\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Remove="wwwroot\fonts\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Remove="wwwroot\fonts\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Remove="wwwroot\fonts\font-awesome\fonts\FontAwesome.otf" />
+    <Content Remove="wwwroot\fonts\font-awesome\less\animated.less" />
+    <Content Remove="wwwroot\fonts\font-awesome\less\bordered-pulled.less" />
+    <Content Remove="wwwroot\fonts\font-awesome\less\core.less" />
+    <Content Remove="wwwroot\fonts\font-awesome\less\fixed-width.less" />
+    <Content Remove="wwwroot\fonts\font-awesome\less\font-awesome.less" />
+    <Content Remove="wwwroot\fonts\font-awesome\less\icons.less" />
+    <Content Remove="wwwroot\fonts\font-awesome\less\larger.less" />
+    <Content Remove="wwwroot\fonts\font-awesome\less\list.less" />
+    <Content Remove="wwwroot\fonts\font-awesome\less\mixins.less" />
+    <Content Remove="wwwroot\fonts\font-awesome\less\path.less" />
+    <Content Remove="wwwroot\fonts\font-awesome\less\rotated-flipped.less" />
+    <Content Remove="wwwroot\fonts\font-awesome\less\stacked.less" />
+    <Content Remove="wwwroot\fonts\font-awesome\less\variables.less" />
+    <Content Remove="wwwroot\fonts\font-awesome\scss\font-awesome.scss" />
+    <Content Remove="wwwroot\fonts\font-awesome\scss\_animated.scss" />
+    <Content Remove="wwwroot\fonts\font-awesome\scss\_bordered-pulled.scss" />
+    <Content Remove="wwwroot\fonts\font-awesome\scss\_core.scss" />
+    <Content Remove="wwwroot\fonts\font-awesome\scss\_fixed-width.scss" />
+    <Content Remove="wwwroot\fonts\font-awesome\scss\_icons.scss" />
+    <Content Remove="wwwroot\fonts\font-awesome\scss\_larger.scss" />
+    <Content Remove="wwwroot\fonts\font-awesome\scss\_list.scss" />
+    <Content Remove="wwwroot\fonts\font-awesome\scss\_mixins.scss" />
+    <Content Remove="wwwroot\fonts\font-awesome\scss\_path.scss" />
+    <Content Remove="wwwroot\fonts\font-awesome\scss\_rotated-flipped.scss" />
+    <Content Remove="wwwroot\fonts\font-awesome\scss\_stacked.scss" />
+    <Content Remove="wwwroot\fonts\font-awesome\scss\_variables.scss" />
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Remove="Resources\Views\Shared\LanguageSelection.el-GR.resx" />
   </ItemGroup>
 
@@ -36,6 +73,40 @@
 
   <ItemGroup>
     <None Include="Resources\Views\Shared\LanguageSelection.el-GR.resx" />
+    <None Include="wwwroot\fonts\font-awesome\css\font-awesome.css" />
+    <None Include="wwwroot\fonts\font-awesome\css\font-awesome.min.css" />
+    <None Include="wwwroot\fonts\font-awesome\fonts\fontawesome-webfont.eot" />
+    <None Include="wwwroot\fonts\font-awesome\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\fonts\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <None Include="wwwroot\fonts\font-awesome\fonts\fontawesome-webfont.woff" />
+    <None Include="wwwroot\fonts\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\fonts\font-awesome\fonts\FontAwesome.otf" />
+    <None Include="wwwroot\fonts\font-awesome\less\animated.less" />
+    <None Include="wwwroot\fonts\font-awesome\less\bordered-pulled.less" />
+    <None Include="wwwroot\fonts\font-awesome\less\core.less" />
+    <None Include="wwwroot\fonts\font-awesome\less\fixed-width.less" />
+    <None Include="wwwroot\fonts\font-awesome\less\font-awesome.less" />
+    <None Include="wwwroot\fonts\font-awesome\less\icons.less" />
+    <None Include="wwwroot\fonts\font-awesome\less\larger.less" />
+    <None Include="wwwroot\fonts\font-awesome\less\list.less" />
+    <None Include="wwwroot\fonts\font-awesome\less\mixins.less" />
+    <None Include="wwwroot\fonts\font-awesome\less\path.less" />
+    <None Include="wwwroot\fonts\font-awesome\less\rotated-flipped.less" />
+    <None Include="wwwroot\fonts\font-awesome\less\stacked.less" />
+    <None Include="wwwroot\fonts\font-awesome\less\variables.less" />
+    <None Include="wwwroot\fonts\font-awesome\scss\font-awesome.scss" />
+    <None Include="wwwroot\fonts\font-awesome\scss\_animated.scss" />
+    <None Include="wwwroot\fonts\font-awesome\scss\_bordered-pulled.scss" />
+    <None Include="wwwroot\fonts\font-awesome\scss\_core.scss" />
+    <None Include="wwwroot\fonts\font-awesome\scss\_fixed-width.scss" />
+    <None Include="wwwroot\fonts\font-awesome\scss\_icons.scss" />
+    <None Include="wwwroot\fonts\font-awesome\scss\_larger.scss" />
+    <None Include="wwwroot\fonts\font-awesome\scss\_list.scss" />
+    <None Include="wwwroot\fonts\font-awesome\scss\_mixins.scss" />
+    <None Include="wwwroot\fonts\font-awesome\scss\_path.scss" />
+    <None Include="wwwroot\fonts\font-awesome\scss\_rotated-flipped.scss" />
+    <None Include="wwwroot\fonts\font-awesome\scss\_stacked.scss" />
+    <None Include="wwwroot\fonts\font-awesome\scss\_variables.scss" />
   </ItemGroup>
 
 </Project>
