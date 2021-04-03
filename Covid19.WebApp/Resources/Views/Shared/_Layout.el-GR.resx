@@ -117,7 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Covers in total the Hellenic Territory" xml:space="preserve">
+    <value>Καλύπτει πλήρως την Ελληνική επικράτεια</value>
+  </data>
+  <data name="Daily updated" xml:space="preserve">
+    <value>Καθημερινη ενημερωση</value>
+  </data>
+  <data name="Dashboard by Region" xml:space="preserve">
+    <value>Ανα περιφειακη ενοτητα</value>
+  </data>
+  <data name="Fully responsive" xml:space="preserve">
+    <value>Πληρως διαδραστικος</value>
+  </data>
+  <data name="Hellenic Territory" xml:space="preserve">
+    <value>Ελληνικη επικρατεια</value>
+  </data>
   <data name="Home" xml:space="preserve">
     <value>Κεντρική</value>
+  </data>
+  <data name="Learn more" xml:space="preserve">
+    <value>Δειτε περισσοτερα</value>
+  </data>
+  <data name="Responsive Map" xml:space="preserve">
+    <value>Διαδραστικος Χαρτης</value>
+  </data>
+  <data name="Search by cases" xml:space="preserve">
+    <value>Δυνατοτητα αναζητησης</value>
+  </data>
+  <data name="Search cases by region" xml:space="preserve">
+    <value>Αναζητηση ανα ΠΕ</value>
+  </data>
+  <data name="Updated daily" xml:space="preserve">
+    <value>καθημερινη ενημερωση</value>
+  </data>
+  <data name="View statistics" xml:space="preserve">
+    <value>Δειτε στατιστικα</value>
   </data>
 </root>

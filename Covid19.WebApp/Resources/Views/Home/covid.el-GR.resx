@@ -123,8 +123,14 @@
   <data name="Clear selection" xml:space="preserve">
     <value>Καθαρισμός επιλογής</value>
   </data>
+  <data name="Covers in total the Hellenic Territory" xml:space="preserve">
+    <value>Καλύπτει πλήρως την Ελληνική επικράτεια</value>
+  </data>
   <data name="Covid-19 Dashboard by Region" xml:space="preserve">
     <value>Χάρτης υγειονομικής ασφάλειαςαπο την λοίμωξη Covid-19</value>
+  </data>
+  <data name="Dashboard by Region" xml:space="preserve">
+    <value>Ανα περιφειακη ενοτητα</value>
   </data>
   <data name="Fill new cases" xml:space="preserve">
     <value>Εισάγεται αριθμό κρουσμάτων</value>
@@ -149,6 +155,9 @@
   </data>
   <data name="Region Name" xml:space="preserve">
     <value>Όνομα ΠΕ :</value>
+  </data>
+  <data name="Responsive Map" xml:space="preserve">
+    <value>Διαδραστικος Χαρτης</value>
   </data>
   <data name="Search by cases" xml:space="preserve">
     <value>Αναζήτηση βάση κρουσμάτων</value>
