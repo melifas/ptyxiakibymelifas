@@ -1,45 +1,78 @@
 ﻿@{
-    ViewData["Title"] = "Αρχική σελίδα";
+    ViewData["Title"] = "Home Page";
 }
+@inject IViewLocalizer T
+
 
 @section Styles {
     <link rel="stylesheet" href="~/lib/leaflet/leaflet.min.css" />
     <link href="~/css/Leaflet.PolylineMeasure.css" rel="stylesheet" />
     <link href="~/css/L.Control.Sidebar.css" rel="stylesheet" />
+    <link href="~/css/L.Control.Sidebar.css" rel="stylesheet" />
+    <link href="~/css/easy-button.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/leaflet-fullscreen/Control.FullScreen.css" />
     <style type="text/css">
         #map {
             height: 800px;
             margin: 20px 20px 0 0;
         }
+
+        .col-xs-12, .col-xs-12, .col-xs-4 {
+            padding: 3px;
+        }
+
+        #divProject {
+            background-color: beige;
+        }
+
+        .errorMsg {
+            padding: 0;
+            text-align: center;
+            background-color: darksalmon;
+        }
     </style>
 }
+
+
 @section Scripts {
     <script type="text/javascript" src="~/lib/jquery-csv/jquery.csv.min.js"></script>
+    <script src="https://use.fontawesome.com/6024ab1387.js"></script>
     <script type="text/javascript" src="~/lib/leaflet/leaflet.min.js"></script>
+    <script type="text/javascript" src="~/lib/leaflet/leaflet.js"></script>
     <script type="text/javascript" src="~/lib/leaflet-fullscreen/Control.FullScreen.min.js"></script>
+    <script src="~/js/leaflet.ajax.min.js"></script>
     <script src="~/lib/leaflet/plugins/L.Control.Sidebar.js"></script>
+    <script src="~/lib/leaflet/plugins/L.Control.Sidebar.js"></script>
+    <script src="~/lib/leaflet/plugins/easy-button.js"></script>
     <script src="~/lib/leaflet/plugins/Leaflet.PolylineMeasure.js"></script>
     <script src="~/lib/leaflet/plugins/leaflet-providers.js"></script>
     <script type="text/javascript">
 
-        var sidebar;
         var mymap;
-        var label;
+        var lyrOSM;
+        var layerFiltered;
+        var layerGraves;
+        var layerTotalGraves;
+        var objOverlays;
         var ctrlMeasure;
         var objOverlays;
         var ctrLayers;
         var objBaseMaps;
+        var sideBar;
+        var ctlSidebar;
+        var ctlEasybutton;
+        var lyrSearch;
+        var dataLayer;
 
 
-        (function(L, document) {
-            //var currentPosition = new L.LatLng(37.96436536738366, 23.73584189995216);
-            var currentPosition = new L.LatLng(38.144699504115366, 23.857665042524335);
+        $(document).ready(function () {
+
+            var currentPosition = new L.LatLng(38.23381, 23.727539);
 
             mymap = L.map('map',
                 {
                     center: currentPosition,
-                    zoom: 19,
+                    zoom: 7,
                     editable: true,
                     fullscreenControl: true,
                     fullscreenControlOptions: {
@@ -47,93 +80,183 @@
                     }
                 });
 
-            var googleTerrainLayer = L.tileLayer('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',
+            // create the tile layer
+            var osmLayer = new L.TileLayer(
+                'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 {
-                    maxZoom: 24,
-                    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-                });
-
-            mymap.addLayer(googleTerrainLayer);
-
-            // graves layer
-            var dataLayer = new L.geoJson(null,
-                {
-                    style: function(f) {
-                        let themes = ['#780911', '#BE78C2', '#874B8B', '#3A113D', '#ff4949', '#ff2424', '#2C169F'];
-                        //const population = f.properties.POP;
-                        const status = f.properties.OID_;
-
-                        switch (true) {
-                        case (status < 510):
-                            color = themes[2];
-                            break;
-                        default:
-                            color = themes[6];
-                            break;
-                        }
-                        return {
-                            'color': color,
-                            'weight': 4,
-                            'opacity': 0.7,
-                            'clickable': false
-                        };
-
-                    },
-                    onEachFeature: function(f, l) {
-                        f.layer = l;
-                        
-                        
-
-                        label = 'Αρίθμηση Τάφου :' + f.properties.OID_ + '</p>';
-
-                        //sidebar.setContent('test <b>test</b> test'+ label);
-                        l.bindTooltip(label, { opacity: 0.8, direction: 'center', className: 'layer-label' });
-
-                        mymap.on('click',
-                            function () {
-                                sidebar.setContent('test <b>test</b> test' + f.properties.OID_);
-                            });
-                    }
-                }).addTo(mymap).on('click',
-                function() {
-                    sidebar.toggle();
-                });
+                    minZoom: 5,
+                    maxZoom: 15,
+                    attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+                }).addTo(mymap);
 
             sidebar = L.control.sidebar('sidebar',
                 {
-                    position: 'left'
+                    position: 'right'
                 });
 
             mymap.addControl(sidebar);
 
 
-            objOverlays = { "Active Maps": dataLayer };
+            // counties layer
+            dataLayer = L.geoJson(null, { style: styleClientLinears, onEachFeature: process }).addTo(mymap);
+
+
+            dataLayer.on('data:loaded',
+                function () {
+                    mymap.fitBounds(dataLayer.getBounds());
+                });
+
+            ctlSidebar = L.control.sidebar('search-sidebar').addTo(mymap);
+
+            ctlEasybutton = L.easyButton('fa fa-search', function () {
+                ctlSidebar.toggle();
+            }).addTo(mymap);
+
+            objOverlays = { "Enable Layer": dataLayer };
             ctrLayers = L.control.layers(objBaseMaps, objOverlays).addTo(mymap);
 
+            $.when(
+                $.getJSON('/data/nomoi.json'),
+                $.get('https://raw.githubusercontent.com/iMEdD-Lab/open-data/master/COVID-19/greece_latest.csv')
+            ).then(function (result1, result2) {
+                let coviddata = $.csv.toObjects(result2[0]);
 
-            ctrlMeasure = L.control.polylineMeasure().addTo(mymap);
+                for (let i = 0; i < result1[0].features.length; i++) {
+                    let foundIndex = coviddata.findIndex(function (l) {
+                        return parseInt(l.pop_11.toString()) === result1[0].features[i].properties.pop_11;
+                    });
+                    if (foundIndex >= 0) {
+                        Object.assign(result1[0].features[i].properties, coviddata[foundIndex]);
+                    }
+                }
 
-            $.getJSON('/data/agiosstefanos.json',
-                function(data) {
-                    dataLayer.clearLayers();
-                    dataLayer.addData(data.features);
-                });
-        })(window.L, window.document);
+                dataLayer.clearLayers();
+                dataLayer.addData(result1[0].features);
+            });
+
+        });
+
+        //***********************Functions******************
+        function styleClientLinears(f) {
+
+            let themes = ['#ffdbdb', '#ffb6b6', '#ff9292', '#ff6d6d', '#ff4949', '#ff2424', '#ff0000'];
+            let color = '#33a02c';
+
+            if (f.properties.new_cases) {
+                const new_cases = f.properties.new_cases;
+                const ratio = new_cases / f.properties.pop_11 * 10000.0;
+
+                switch (true) {
+                    case (ratio == 0.0):
+                        color = '#33a02c';
+                        break;
+                    case (ratio < 0.2):
+                        color = themes[0];
+                        break;
+                    case (ratio < 0.4):
+                        color = themes[1];
+                        break;
+                    case (ratio < 0.6):
+                        color = themes[2];
+                        break;
+                    case (ratio < 0.8):
+                        color = themes[3];
+                        break;
+                    case (ratio < 1.0):
+                        color = themes[4];
+                        break;
+                    default:
+                        color = themes[6];
+                        break;
+                }
+            }
+            return {
+                'color': color,
+                'weight': 1,
+                'opacity': 0.8,
+                'clickable': false
+            };
+        }
+
+        function process(f, l) {
+            f.layer = l;
+
+            var label = f.properties.county;
+            let ratio = f.properties.new_cases / f.properties.pop_11 * 10000.0;
+            if (f.properties.pop_11) {
+                label = '<strong>' + f.properties.county + '</strong>' + '<br/>@T["Population"]: ' + parseInt(f.properties.pop_11.toString()) + '<br/>@T["New Cases"]: ' + parseInt(f.properties.new_cases.toString()) + '<br/>λ: ' + ratio.toFixed(2);
+            }
+            l.bindTooltip(label, { opacity: 0.8, direction: 'center', className: 'layer-label' });
+
+            if (f.properties.theme) {
+                label = '<p>' + f.properties.scheduling + '</p>';
+            }
+            l.on('click', function (e) { openSidebar(e) });
+        }
+
+        function openSidebar(selection) {
+            sidebar.toggle();
+            document.getElementById('name').textContent = selection.target.feature.properties.NAME_GR;
+            document.getElementById('population').textContent = parseInt(selection.target.feature.properties.pop_11);
+            document.getElementById('number').textContent = parseInt(selection.target.feature.properties.new_cases);
+
+
+
+        }
+
+        //***********************Search Functions**************
+
+        function returnGraveById(id) {
+            var number = parseInt(id);
+            var aLayers = dataLayer.getLayers();
+
+            for (var i = 0; i < aLayers.length - 1; i++) {
+                debugger;
+                var featureId = parseInt(aLayers[i].feature.properties.new_cases);
+                if (featureId === number) {
+                    return aLayers[i];
+                }
+            }
+            return false;
+        }
+
+
+        $("#btnFindProject").click(function () {
+            var id = $("#txtFindProject").val();
+            debugger;
+            var lyr = returnGraveById(id);
+            if (lyr) {
+                if (lyrSearch) {
+                    lyrSearch.remove();
+                }
+                lyrSearch = L.geoJSON(lyr.toGeoJSON(), { style: { color: 'red', weight: 10, opacity: 0.5 } }).addTo(mymap);
+                mymap.fitBounds(lyr.getBounds().pad(5));
+                var att = lyr.feature.properties;
+                $("#divProjectData").html("ΠΕ : " + att.NAME_GR);
+                $("#divClearLayer").click(function () {
+                    lyrSearch.clearLayers();
+                })
+                divClearLayer
+            } else {
+                $("#divProjectError").html("@T["No result match"]");
+            }
+        });
+
+
     </script>
 }
+
+
 <div class="text-center">
-    <h1 class="display-4">Covid-19</h1>
+    <h1 class="display-4">@T["Hellenic Territory"]</h1>
 </div>
 
 <div class="">
-    <div class="">
-        <h2>Simulation</h2>
-    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h4>Χάρτης υγειονομικής ασφάλειαςαπο την λοίμωξη Covid-19</h4>
+                    <h4>@T["Covid-19 Dashboard by Region"]</h4>
                 </div>
             </div>
         </div>
@@ -153,5 +276,31 @@
 </div>
 
 <div id="sidebar">
-    <h1>leaflet-sidebar</h1>
+    <h2> @T["Region Details"] </h2>
+
+    <h5><strong> @T["Region Name "] : </strong><span id="name"></span> </h5>
+    <h5><strong>@T["Population "] </strong><span id="population"></span> </h5>
+    <h5><strong>@T["New Cases "]</strong><span id="number"></span> </h5>
+</div>
+
+<div id="search-sidebar">
+    <button id="btnLocate" class="btn btn-primary btn-block">@T["Search by cases"]</button><br />
+    <div id="divProject">
+        <div id="divProjectLabel" class="text-center">
+            <h4>@T["Cases"]</h4>
+        </div>
+        <div id="divProjectError" class="errorMsg"></div>
+        <div id="divFindProject" class="form-group">
+            <div>
+                <input type="text" id="txtFindProject" class="form-control" placeholder="@T["Fill new cases"]" />
+            </div>
+            <div>
+                <button id="btnFindProject" class="btn btn-primary btn-block">@T["Find region"]</button>
+            </div>
+        </div>
+        <div class="" id="divProjectData"></div>
+        <div>
+            <button id="divClearLayer" class="btn btn-primary btn-block">@T["Clear selection "]</button>
+        </div>
+    </div>
 </div>

@@ -3,7 +3,7 @@
 @inject UserManager<IdentityUser> UserManager
 @inject IViewLocalizer T
 
-<ul class="navbar-nav">
+
     @if (SignInManager.IsSignedIn(User))
     {
         <form asp-area="" asp-controller="Account" asp-action="Logout" id="logoutForm"
@@ -15,11 +15,11 @@
     }
     else
     {
-        <li class="nav-item">
-            <a class="nav-link text-dark" id="registerLink" asp-controller="Account" asp-action="Register">@T["Register"]</a>
+        <li>
+            <a class="page-scroll" id="registerLink" asp-controller="Account" asp-action="Register">@T["Register"]</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" id="loginLink" asp-controller="Account" asp-action="Login">@T["Login"]</a>
+        <li >
+            <a class="page-scroll" id="loginLink" asp-controller="Account" asp-action="Login">@T["Login"]</a>
         </li>
     }
-</ul>
+

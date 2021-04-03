@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\NewFolder\**" />
+    <Content Remove="wwwroot\NewFolder\**" />
+    <EmbeddedResource Remove="wwwroot\NewFolder\**" />
+    <None Remove="wwwroot\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="wwwroot\fonts\font-awesome\css\font-awesome.css" />
     <Content Remove="wwwroot\fonts\font-awesome\css\font-awesome.min.css" />
     <Content Remove="wwwroot\fonts\font-awesome\fonts\fontawesome-webfont.eot" />
@@ -65,10 +72,6 @@
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.113" />
     <PackageReference Include="OrchardCore.Localization.Core" Version="1.0.0-rc2-13450" />
     <PackageReference Include="SendGrid" Version="9.22.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\NewFolder\" />
   </ItemGroup>
 
   <ItemGroup>
