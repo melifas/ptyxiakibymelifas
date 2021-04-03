@@ -101,7 +101,7 @@
                     <a class="navbar-brand" href="@Url.Action("covid", "Home")">WEBAPPLAYERS</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
-                   
+
                     <ul class="nav navbar-nav navbar-right">
                         <li><a class="page-scroll" asp-area="" asp-controller="Home" asp-action="Index">@T["Home"]</a></li>
                         <li><a class="page-scroll" href="#features">Features</a></li>
@@ -110,6 +110,7 @@
                         <li><a class="page-scroll" href="#pricing">Pricing</a></li>
                         <li><a class="page-scroll" href="#contact">Contact</a></li>
                         <li><partial name="_LoginPartial" /></li>
+                        <li><partial name="LanguageSelection"/></li>
                     </ul>
                 </div>
             </div>
@@ -133,7 +134,7 @@
                         <p>@T["Covers in total the Hellenic Territory"]</p>
                         <p>
                             <a class="btn btn-lg btn-primary" href="#" role="button">@T["Learn more"]</a>
-                            
+
                         </p>
                     </div>
                     <div class="carousel-image wow zoomIn">
@@ -167,94 +168,35 @@
         </a>
     </div>
 
-<section id="team" class="gray-section team">
-    <div class="container">
-        @RenderBody()
-    </div>
-</section>
-    
+    <section id="team" class="gray-section team">
+        <div class="container">
+            @RenderBody()
+        </div>
+    </section>
 
-<section id="features" class="container services">
-    <div class="row">
-        <div class="col-sm-3">
-            <h2>@T["Fully responsive"]</h2>
-            <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
-            <p><a class="navy-link" href="#" role="button">Details &raquo;</a></p>
-        </div>
-        <div class="col-sm-3">
-            <h2>@T["View statistics"]</h2>
-            <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
-            <p><a class="navy-link" href="#" role="button">Details &raquo;</a></p>
-        </div>
-        <div class="col-sm-3">
-            <h2>@T["Search by cases"]</h2>
-            <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
-            <p><a class="navy-link" href="#" role="button">Details &raquo;</a></p>
-        </div>
-        <div class="col-sm-3">
-            <h2>@T["Daily updated"]</h2>
-            <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
-            <p><a class="navy-link" href="#" role="button">Details &raquo;</a></p>
-        </div>
-    </div>
-</section>
 
-<section class="container features">
-    <div class="row">
-        <div class="col-lg-12 text-center">
-            <div class="navy-line"></div>
-            <h1>Over 40+ unique view<br /> <span class="navy"> with many custom components</span> </h1>
-            <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. </p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-3 text-center wow fadeInLeft">
-            <div>
-                <i class="fa fa-mobile features-icon"></i>
-                <h2>Full responsive</h2>
-                <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
+    <section id="features" class="container services">
+        <div class="row">
+            <div class="col-sm-3">
+                <h2>@T["Fully responsive"]</h2>
             </div>
-            <div class="m-t-lg">
-                <i class="fa fa-bar-chart features-icon"></i>
-                <h2>6 Charts Library</h2>
+            <div class="col-sm-3">
+                <h2>@T["View statistics"]</h2>
                 <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
+                <p><a class="navy-link" href="#" role="button">Details &raquo;</a></p>
             </div>
-        </div>
-        <div class="col-md-6 text-center  wow zoomIn">
-            <img src="~/landing/perspective.png" alt="dashboard" class="img-responsive">
-        </div>
-        <div class="col-md-3 text-center wow fadeInRight">
-            <div>
-                <i class="fa fa-envelope features-icon"></i>
-                <h2>Mail pages</h2>
+            <div class="col-sm-3">
+                <h2>@T["Search by cases"]</h2>
                 <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
+                <p><a class="navy-link" href="#" role="button">Details &raquo;</a></p>
             </div>
-            <div class="m-t-lg">
-                <i class="fa fa-google features-icon"></i>
-                <h2>AngularJS version</h2>
+            <div class="col-sm-3">
+                <h2>@T["Daily updated"]</h2>
                 <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
+                <p><a class="navy-link" href="#" role="button">Details &raquo;</a></p>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12 text-center">
-            <div class="navy-line"></div>
-            <h1>Discover great feautres</h1>
-            <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. </p>
-        </div>
-    </div>
-    <div class="row features-block">
-        <div class="col-lg-6 features-text wow fadeInLeft">
-            <small>INSPINIA</small>
-            <h2>Perfectly designed </h2>
-            <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with latest jQuery plugins.</p>
-            <a href="" class="btn btn-primary">Learn more</a>
-        </div>
-        <div class="col-lg-6 text-right wow fadeInRight">
-            <img src="~/landing/dashboard.png" alt="dashboard" class="img-responsive pull-right">
-        </div>
-    </div>
-</section>
+    </section>
 
 <section class="features">
         <div class="container">
@@ -354,68 +296,29 @@
     <script src="~/bootstrap.js"></script>
     <script src="~/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="~/app/inspinia.js"></script>
-    <script src="~/plugins/metisMenu/metisMenu.min.js"></script>
+    <script src="plugins/metisMenu/metisMenu.min.js"></script>
+    <script src="plugins/flot/jquery.flot.pie.js"></script>
+    <script src="plugins/flot/jquery.flot.resize.js"></script>
+    <script src="plugins/flot/jquery.flot.spline.js"></script>
+    <script src="plugins/flot/jquery.flot.symbol.js"></script>
+    <script src="plugins/flot/jquery.flot.time.js"></script>
+    <script src="plugins/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="plugins/flot/curvedLines.js"></script>
+    <script src="plugins/flot/excanvas.min.js"></script>
+    <script src="plugins/chartJs/Chart.min.js"></script>
+    <script src="plugins/sparkline/jquery.sparkline.min.js"></script>
+    <script src="plugins/peity/jquery.peity.min.js"></script>
+
+
+    
 
 
 
-    <script>
 
-        $(document).ready(function () {
 
-            $('body').scrollspy({
-                target: '.navbar-fixed-top',
-                offset: 80
-            });
 
-            // Page scrolling feature
-            $('a.page-scroll').bind('click',
-                function (event) {
-                    var link = $(this);
-                    $('html, body').stop().animate({
-                        scrollTop: $(link.attr('href')).offset().top - 50
-                    },
-                        500);
-                    event.preventDefault();
-                    $('#navbar').collapse('hide');
-                });
-        });
 
-        var cbpAnimatedHeader = (function () {
-            var docElem = document.documentElement,
-                header = document.querySelector('.navbar-default'),
-                didScroll = false,
-                changeHeaderOn = 200;
+@RenderSection("Scripts", required: false)
 
-            function init() {
-                window.addEventListener('scroll',
-                    function (event) {
-                        if (!didScroll) {
-                            didScroll = true;
-                            setTimeout(scrollPage, 250);
-                        }
-                    },
-                    false);
-            }
-
-            function scrollPage() {
-                var sy = scrollY();
-                if (sy >= changeHeaderOn) {
-                    $(header).addClass('navbar-scroll')
-                } else {
-                    $(header).removeClass('navbar-scroll')
-                }
-                didScroll = false;
-            }
-
-            function scrollY() {
-                return window.pageYOffset || docElem.scrollTop;
-            }
-
-            init();
-
-        })();
-
-    </script>
-    @RenderSection("Scripts", required: false)
 </body>
 </html>
