@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace Covid19.WebApp.Helpers
 {
     public static class HmtlHelperExtensions
     {
-        public static string IsSelected(this HtmlHelper html, string controller = null, string action = null, string cssClass = null)
+        public static string IsSelected(this IHtmlHelper html, string controller = null, string action = null, string cssClass = null)
         {
 
             if (String.IsNullOrEmpty(cssClass))
@@ -27,7 +28,7 @@ namespace Covid19.WebApp.Helpers
                 cssClass : String.Empty;
         }
 
-        public static string PageClass(this HtmlHelper html)
+        public static string PageClass(this IHtmlHelper html)
         {
             string currentAction = (string)html.ViewContext.RouteData.Values["action"];
             return currentAction;
