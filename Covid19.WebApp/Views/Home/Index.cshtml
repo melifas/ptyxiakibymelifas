@@ -1,306 +1,247 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    Layout = null;
 }
+
+
 @inject IViewLocalizer T
 
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-@section Styles {
-    <link rel="stylesheet" href="~/lib/leaflet/leaflet.min.css" />
-    <link href="~/css/Leaflet.PolylineMeasure.css" rel="stylesheet" />
-    <link href="~/css/L.Control.Sidebar.css" rel="stylesheet" />
-    <link href="~/css/L.Control.Sidebar.css" rel="stylesheet" />
-    <link href="~/css/easy-button.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/lib/leaflet-fullscreen/Control.FullScreen.css" />
-    <style type="text/css">
-        #map {
-            height: 800px;
-            margin: 20px 20px 0 0;
-        }
+    <title>INSPINIA | @ViewBag.Title</title>
 
-        .col-xs-12, .col-xs-12, .col-xs-4 {
-            padding: 3px;
-        }
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
 
-        #divProject {
-            background-color: beige;
-        }
+    @*<link href="~/css/site.css" rel="stylesheet" />*@
+    <link href="~/css/animate.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/bootstrap.css" rel="stylesheet" />
 
-        .errorMsg {
-            padding: 0;
-            text-align: center;
-            background-color: darksalmon;
-        }
-    </style>
-}
+    <link href="/fonts/font-awesome/css/font-awesome.css" />
 
+    <link href="~/plugins/jquery-ui/jquery-ui.css" rel="stylesheet" />
+</head>
 
-@section Scripts {
-    <script type="text/javascript" src="~/lib/jquery-csv/jquery.csv.min.js"></script>
-    <script src="https://use.fontawesome.com/6024ab1387.js"></script>
-    <script type="text/javascript" src="~/lib/leaflet/leaflet.min.js"></script>
-    <script type="text/javascript" src="~/lib/leaflet/leaflet.js"></script>
-    <script type="text/javascript" src="~/lib/leaflet-fullscreen/Control.FullScreen.min.js"></script>
-    <script src="~/js/leaflet.ajax.min.js"></script>
-    <script src="~/lib/leaflet/plugins/L.Control.Sidebar.js"></script>
-    <script src="~/lib/leaflet/plugins/L.Control.Sidebar.js"></script>
-    <script src="~/lib/leaflet/plugins/easy-button.js"></script>
-    <script src="~/lib/leaflet/plugins/Leaflet.PolylineMeasure.js"></script>
-    <script src="~/lib/leaflet/plugins/leaflet-providers.js"></script>
-    <script type="text/javascript">
+<body id="page-top" class="landing-page">
 
-        var mymap;
-        var lyrOSM;
-        var layerFiltered;
-        var layerGraves;
-        var layerTotalGraves;
-        var objOverlays;
-        var ctrlMeasure;
-        var objOverlays;
-        var ctrLayers;
-        var objBaseMaps;
-        var sideBar;
-        var ctlSidebar;
-        var ctlEasybutton;
-        var lyrSearch;
-        var dataLayer;
+    <div class="navbar-wrapper">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header page-scroll">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="@Url.Action("covid", "Home")">WEBAPPLAYERS</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
 
-
-        $(document).ready(function () {
-
-            var currentPosition = new L.LatLng(38.23381, 23.727539);
-
-            mymap = L.map('map',
-                {
-                    center: currentPosition,
-                    zoom: 7,
-                    editable: true,
-                    fullscreenControl: true,
-                    fullscreenControlOptions: {
-                        position: 'topleft'
-                    }
-                });
-
-            // create the tile layer
-            var osmLayer = new L.TileLayer(
-                'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                {
-                    minZoom: 5,
-                    maxZoom: 15,
-                    attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-                }).addTo(mymap);
-
-            sidebar = L.control.sidebar('sidebar',
-                {
-                    position: 'right'
-                });
-
-            mymap.addControl(sidebar);
-
-
-            // counties layer
-            dataLayer = L.geoJson(null, { style: styleClientLinears, onEachFeature: process }).addTo(mymap);
-
-
-            dataLayer.on('data:loaded',
-                function () {
-                    mymap.fitBounds(dataLayer.getBounds());
-                });
-
-            ctlSidebar = L.control.sidebar('search-sidebar').addTo(mymap);
-
-            ctlEasybutton = L.easyButton('fa fa-search', function () {
-                ctlSidebar.toggle();
-            }).addTo(mymap);
-
-            objOverlays = { "Enable Layer": dataLayer };
-            ctrLayers = L.control.layers(objBaseMaps, objOverlays).addTo(mymap);
-
-            $.when(
-                $.getJSON('/data/nomoi.json'),
-                $.get('https://raw.githubusercontent.com/iMEdD-Lab/open-data/master/COVID-19/greece_latest.csv')
-            ).then(function (result1, result2) {
-                let coviddata = $.csv.toObjects(result2[0]);
-
-                for (let i = 0; i < result1[0].features.length; i++) {
-                    let foundIndex = coviddata.findIndex(function (l) {
-                        return parseInt(l.pop_11.toString()) === result1[0].features[i].properties.pop_11;
-                    });
-                    if (foundIndex >= 0) {
-                        Object.assign(result1[0].features[i].properties, coviddata[foundIndex]);
-                    }
-                }
-
-                dataLayer.clearLayers();
-                dataLayer.addData(result1[0].features);
-            });
-
-        });
-
-        //***********************Functions******************
-        function styleClientLinears(f) {
-
-            let themes = ['#ffdbdb', '#ffb6b6', '#ff9292', '#ff6d6d', '#ff4949', '#ff2424', '#ff0000'];
-            let color = '#33a02c';
-
-            if (f.properties.new_cases) {
-                const new_cases = f.properties.new_cases;
-                const ratio = new_cases / f.properties.pop_11 * 10000.0;
-
-                switch (true) {
-                    case (ratio == 0.0):
-                        color = '#33a02c';
-                        break;
-                    case (ratio < 0.2):
-                        color = themes[0];
-                        break;
-                    case (ratio < 0.4):
-                        color = themes[1];
-                        break;
-                    case (ratio < 0.6):
-                        color = themes[2];
-                        break;
-                    case (ratio < 0.8):
-                        color = themes[3];
-                        break;
-                    case (ratio < 1.0):
-                        color = themes[4];
-                        break;
-                    default:
-                        color = themes[6];
-                        break;
-                }
-            }
-            return {
-                'color': color,
-                'weight': 1,
-                'opacity': 0.8,
-                'clickable': false
-            };
-        }
-
-        function process(f, l) {
-            f.layer = l;
-
-            var label = f.properties.county;
-            let ratio = f.properties.new_cases / f.properties.pop_11 * 10000.0;
-            if (f.properties.pop_11) {
-                label = '<strong>' + f.properties.county + '</strong>' + '<br/>@T["Population"]: ' + parseInt(f.properties.pop_11.toString()) + '<br/>@T["New Cases"]: ' + parseInt(f.properties.new_cases.toString()) + '<br/>λ: ' + ratio.toFixed(2);
-            }
-            l.bindTooltip(label, { opacity: 0.8, direction: 'center', className: 'layer-label' });
-
-            if (f.properties.theme) {
-                label = '<p>' + f.properties.scheduling + '</p>';
-            }
-            l.on('click', function (e) { openSidebar(e) });
-        }
-
-        function openSidebar(selection) {
-            sidebar.toggle();
-            document.getElementById('name').textContent = selection.target.feature.properties.NAME_GR;
-            document.getElementById('population').textContent = parseInt(selection.target.feature.properties.pop_11);
-            document.getElementById('number').textContent = parseInt(selection.target.feature.properties.new_cases);
-
-
-
-        }
-
-        //***********************Search Functions**************
-
-        function returnGraveById(id) {
-            var number = parseInt(id);
-            var aLayers = dataLayer.getLayers();
-
-            for (var i = 0; i < aLayers.length - 1; i++) {
-                debugger;
-                var featureId = parseInt(aLayers[i].feature.properties.new_cases);
-                if (featureId === number) {
-                    return aLayers[i];
-                }
-            }
-            return false;
-        }
-
-
-        $("#btnFindProject").click(function () {
-            var id = $("#txtFindProject").val();
-            debugger;
-            var lyr = returnGraveById(id);
-            if (lyr) {
-                if (lyrSearch) {
-                    lyrSearch.remove();
-                }
-                lyrSearch = L.geoJSON(lyr.toGeoJSON(), { style: { color: 'red', weight: 10, opacity: 0.5 } }).addTo(mymap);
-                mymap.fitBounds(lyr.getBounds().pad(5));
-                var att = lyr.feature.properties;
-                $("#divProjectData").html("ΠΕ : " + att.NAME_GR);
-                $("#divClearLayer").click(function () {
-                    lyrSearch.clearLayers();
-                })
-                divClearLayer
-            } else {
-                $("#divProjectError").html("@T["No result match"]");
-            }
-        });
-
-
-    </script>
-}
-
-
-<div class="text-center">
-    <h1 class="display-4">@T["Hellenic Territory"]</h1>
-</div>
-
-<div class="">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <h4>@T["Covid-19 Dashboard by Region"]</h4>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a class="page-scroll" asp-area="" asp-controller="Home" asp-action="covid">@T["Home"]</a></li>
+                        <li><a class="page-scroll" href="#features">Features</a></li>
+                        <li><a class="page-scroll" href="#team">Team</a></li>
+                        <li><a class="page-scroll" href="#testimonials">Testimonials</a></li>
+                        <li><a class="page-scroll" href="#pricing">Pricing</a></li>
+                        <li><a class="page-scroll" href="#contact">Contact</a></li>
+                        <li><partial name="_LoginPartial" /></li>
+                        <li><partial name="LanguageSelection" /></li>
+                    </ul>
                 </div>
             </div>
+        </nav>
+    </div>
+<div id="inSlider" class="carousel carousel-fade" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#inSlider" data-slide-to="0" class="active"></li>
+        <li data-target="#inSlider" data-slide-to="1"></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+        <div class="item active">
+            <div class="container">
+                <div class="carousel-caption">
+                    <h1>
+                        Covid-19<br />
+                        @T["Responsive Map"]<br />
+                        @T["Dashboard by Region"]<br />
+                        @T["Hellenic Territory"]
+                    </h1>
+                    <p>@T["Covers in total the Hellenic Territory"]</p>
+                    <p>
+                        <a class="btn btn-lg btn-primary" href="#" role="button">@T["Learn more"]</a>
+
+                    </p>
+                </div>
+                <div class="carousel-image wow zoomIn">
+                    <img src="~/landing/laptop.png" />
+
+                </div>
+            </div>
+            <!-- Set background for slide in css -->
+            <div class="header-back one"></div>
+
+        </div>
+        <div class="item">
+            <div class="container">
+                <div class="carousel-caption blank">
+                    <h1>@T["View statistics"] <br /> @T["Updated daily"]</h1>
+                    <p>@T["Search cases by region"]</p>
+                    <p><a class="btn btn-lg btn-primary" href="#" role="button">@T["Learn more"]</a></p>
+                </div>
+            </div>
+            <!-- Set background for slide in css -->
+            <div class="header-back two"></div>
         </div>
     </div>
-    <div class="">
+    <a class="left carousel-control" href="#inSlider" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#inSlider" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+<section id="features" class="container services">
         <div class="row">
-            <div class="col-md-12">
-                <div id="map"></div>
+            <div class="col-sm-3">
+                <h2>@T["Fully responsive"]</h2>
             </div>
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <p>&nbsp;</p>
+            <div class="col-sm-3">
+                <h2>@T["View statistics"]</h2>
+                <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
+                <p><a class="navy-link" href="#" role="button">Details &raquo;</a></p>
+            </div>
+            <div class="col-sm-3">
+                <h2>@T["Search by cases"]</h2>
+                <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
+                <p><a class="navy-link" href="#" role="button">Details &raquo;</a></p>
+            </div>
+            <div class="col-sm-3">
+                <h2>@T["Daily updated"]</h2>
+                <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
+                <p><a class="navy-link" href="#" role="button">Details &raquo;</a></p>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="navy-line"></div>
+                    <h1>More and more extra great feautres</h1>
+                    <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5 col-lg-offset-1 features-text">
+                    <small>INSPINIA</small>
+                    <h2>Perfectly designed </h2>
+                    <i class="fa fa-bar-chart big-icon pull-right"></i>
+                    <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with.</p>
+                </div>
+                <div class="col-lg-5 features-text">
+                    <small>INSPINIA</small>
+                    <h2>Perfectly designed </h2>
+                    <i class="fa fa-bolt big-icon pull-right"></i>
+                    <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5 col-lg-offset-1 features-text">
+                    <small>INSPINIA</small>
+                    <h2>Perfectly designed </h2>
+                    <i class="fa fa-clock-o big-icon pull-right"></i>
+                    <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with.</p>
+                </div>
+                <div class="col-lg-5 features-text">
+                    <small>INSPINIA</small>
+                    <h2>Perfectly designed </h2>
+                    <i class="fa fa-users big-icon pull-right"></i>
+                    <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with.</p>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-<div id="sidebar">
-    <h2> @T["Region Details"] </h2>
+    </section>
 
-    <h5><strong> @T["Region Name "] : </strong><span id="name"></span> </h5>
-    <h5><strong>@T["Population "] </strong><span id="population"></span> </h5>
-    <h5><strong>@T["New Cases "]</strong><span id="number"></span> </h5>
-</div>
-
-<div id="search-sidebar">
-    <button id="btnLocate" class="btn btn-primary btn-block">@T["Search by cases"]</button><br />
-    <div id="divProject">
-        <div id="divProjectLabel" class="text-center">
-            <h4>@T["Cases"]</h4>
-        </div>
-        <div id="divProjectError" class="errorMsg"></div>
-        <div id="divFindProject" class="form-group">
-            <div>
-                <input type="text" id="txtFindProject" class="form-control" placeholder="@T["Fill new cases"]" />
+    <section id="contact" class="gray-section contact">
+        <div class="container">
+            <div class="row m-b-lg">
+                <div class="col-lg-12 text-center">
+                    <div class="navy-line"></div>
+                    <h1>Contact Us</h1>
+                    <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p>
+                </div>
             </div>
-            <div>
-                <button id="btnFindProject" class="btn btn-primary btn-block">@T["Find region"]</button>
+            <div class="row m-b-lg">
+                <div class="col-lg-3 col-lg-offset-3">
+                    <address>
+                        <strong><span class="navy">Company name, Inc.</span></strong><br />
+                        795 Folsom Ave, Suite 600<br />
+                        San Francisco, CA 94107<br />
+                        <abbr title="Phone">P:</abbr> (123) 456-7890
+                    </address>
+                </div>
+                <div class="col-lg-4">
+                    <p class="text-color">
+                        Consectetur adipisicing elit. Aut eaque, totam corporis laboriosam veritatis quis ad perspiciatis, totam corporis laboriosam veritatis, consectetur adipisicing elit quos non quis ad perspiciatis, totam corporis ea,
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <a href="mailto:test@email.com" class="btn btn-primary">Send us mail</a>
+                    <p class="m-t-sm">
+                        Or follow us on social platform
+                    </p>
+                    <ul class="list-inline social-icon">
+                        <li>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-linkedin"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center m-t-lg m-b-lg">
+                    <p><strong>&copy; 2015 Company Name</strong><br /> consectetur adipisicing elit. Aut eaque, laboriosam veritatis, quos non quis ad perspiciatis, totam corporis ea, alias ut unde.</p>
+                </div>
             </div>
         </div>
-        <div class="" id="divProjectData"></div>
-        <div>
-            <button id="divClearLayer" class="btn btn-primary btn-block">@T["Clear selection "]</button>
-        </div>
-    </div>
-</div>
+    </section>
+
+    <!-- Section for main scripts render -->
+
+    <script src="~/jquery-2.1.1.js"></script>
+    <script src="~/bootstrap.js"></script>
+    <script src="~/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="~/app/inspinia.js"></script>
+    <script src="plugins/metisMenu/metisMenu.min.js"></script>
+    <script src="plugins/flot/jquery.flot.pie.js"></script>
+    <script src="plugins/flot/jquery.flot.resize.js"></script>
+    <script src="plugins/flot/jquery.flot.spline.js"></script>
+    <script src="plugins/flot/jquery.flot.symbol.js"></script>
+    <script src="plugins/flot/jquery.flot.time.js"></script>
+    <script src="plugins/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="plugins/flot/curvedLines.js"></script>
+    <script src="plugins/flot/excanvas.min.js"></script>
+    <script src="plugins/chartJs/Chart.min.js"></script>
+    <script src="plugins/sparkline/jquery.sparkline.min.js"></script>
+    <script src="plugins/peity/jquery.peity.min.js"></script>
+
+</body>
+</html>

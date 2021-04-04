@@ -147,27 +147,27 @@
                 const ratio = new_cases / f.properties.pop_11 * 10000.0;
 
                 switch (true) {
-                    case (ratio == 0.0):
-                        color = '#33a02c';
-                        break;
-                    case (ratio < 0.2):
-                        color = themes[0];
-                        break;
-                    case (ratio < 0.4):
-                        color = themes[1];
-                        break;
-                    case (ratio < 0.6):
-                        color = themes[2];
-                        break;
-                    case (ratio < 0.8):
-                        color = themes[3];
-                        break;
-                    case (ratio < 1.0):
-                        color = themes[4];
-                        break;
-                    default:
-                        color = themes[6];
-                        break;
+                case (ratio == 0.0):
+                    color = '#33a02c';
+                    break;
+                case (ratio < 0.2):
+                    color = themes[0];
+                    break;
+                case (ratio < 0.4):
+                    color = themes[1];
+                    break;
+                case (ratio < 0.6):
+                    color = themes[2];
+                    break;
+                case (ratio < 0.8):
+                    color = themes[3];
+                    break;
+                case (ratio < 1.0):
+                    color = themes[4];
+                    break;
+                default:
+                    color = themes[6];
+                    break;
                 }
             }
             return {
@@ -244,6 +244,7 @@
 
 
     </script>
+
 }
 
 
