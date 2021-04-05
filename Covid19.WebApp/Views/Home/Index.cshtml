@@ -46,9 +46,8 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li><a class="page-scroll" asp-area="" asp-controller="Home" asp-action="covid">@T["Home"]</a></li>
                         <li><a class="page-scroll" href="#features">Features</a></li>
-                        <li><a class="page-scroll" href="#team">Team</a></li>
+                        <li><a class="page-scroll" href="#team">"@T["Map"]</a></li>
                         <li><a class="page-scroll" href="#testimonials">Testimonials</a></li>
-                        <li><a class="page-scroll" href="#pricing">Pricing</a></li>
                         <li><a class="page-scroll" href="#contact">Contact</a></li>
                         <li><partial name="_LoginPartial" /></li>
                         <li><partial name="LanguageSelection" /></li>
@@ -113,15 +112,17 @@
         <div class="row">
             <div class="col-sm-3">
                 <h2>@T["Fully responsive"]</h2>
-            </div>
-            <div class="col-sm-3">
-                <h2>@T["View statistics"]</h2>
-                <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
+                <p>@T["A responsive map of hellenic terrtory with lots of features"]</p>
                 <p><a class="navy-link" href="#" role="button">Details &raquo;</a></p>
             </div>
             <div class="col-sm-3">
-                <h2>@T["Search by cases"]</h2>
-                <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
+                <h2>@T["View statistics"]</h2>
+                <p>@T["Covid 19 statistics daily updated"] </p>
+                <p><a class="navy-link" href="#" role="button">Details &raquo;</a></p>
+            </div>
+            <div class="col-sm-3">
+                <h2>@T["Search capabilities"]</h2>
+                <p>@T["Find easily your region with the advanced search capabilities"]</p>
                 <p><a class="navy-link" href="#" role="button">Details &raquo;</a></p>
             </div>
             <div class="col-sm-3">
