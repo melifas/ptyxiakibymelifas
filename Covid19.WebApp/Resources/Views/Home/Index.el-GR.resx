@@ -135,6 +135,12 @@
   <data name="Covid-19 Dashboard by Region" xml:space="preserve">
     <value>Χάρτης υγειονομικής ασφάλειαςαπο την λοίμωξη Covid-19</value>
   </data>
+  <data name="Daily updated" xml:space="preserve">
+    <value>Καθημερινά ενημερωμένα</value>
+  </data>
+  <data name="Daily updated statistics for various fields such as new cases, new tests , new deaths and other various usefull information" xml:space="preserve">
+    <value>Καθημερινά ενημερωμένα δεδομένα σχετικά με διάφορα πεδία όπως νεα κρούσματα, νέοι θάνατοι και διάφορες άλλες νέες πληροφορίες</value>
+  </data>
   <data name="Dashboard by Region" xml:space="preserve">
     <value>Ανα περιφειακη ενοτητα</value>
   </data>
