@@ -122,8 +122,38 @@
             ).then(function (result1, result2,result3) {
                 let coviddata = $.csv.toObjects(result2[0]);
                 let statisticdata = $.csv.toArrays(result3[0]);
-                console.log(statisticdata)
+                
 
+                let covidcasestoday = statisticdata[1][statisticdata[1].length-1];
+                let covidcasesyesterday = statisticdata[1][statisticdata[1].length-2];
+                
+                let percentcovid = Math.round(((covidcasestoday - covidcasesyesterday) / covidcasesyesterday)*100);
+
+                $("#casestoday").html(parseInt(covidcasestoday));
+                $("#casestodaypercent").html(parseInt(percentcovid)+'%');
+
+
+                let deathstoday = statisticdata[2][statisticdata[2].length-1];
+                let deathsyesterday = statisticdata[2][statisticdata[2].length-2];
+                 
+                let percentdeaths = Math.round(((deathstoday - deathsyesterday) / deathsyesterday)*100);
+
+                $("#deathstoday").html(parseInt(deathstoday));
+                $("#deathstodaypercent").html(parseInt(percentdeaths)+'%');
+
+
+
+                let newteststoday = statisticdata[11][statisticdata[11].length-1];
+                let newtestsyesterday = statisticdata[11][statisticdata[11].length-2];
+                
+                let percenttests = Math.round(((newteststoday - newtestsyesterday) / newtestsyesterday)*100);
+
+                $("#newtesttoday").html(parseInt(newteststoday));
+                $("#newtesttodaypercent").html(parseInt(percenttests)+'%');
+
+
+                let total = statisticdata[15][statisticdata[15].length-1];
+                $("#totalfrombegin").html(parseInt(total));
 
 
                 for (let i = 0; i < result1[0].features.length; i++) {
@@ -205,12 +235,6 @@
             document.getElementById('name').textContent = selection.target.feature.properties.NAME_GR;
             document.getElementById('population').textContent = parseInt(selection.target.feature.properties.pop_11);
             document.getElementById('number').textContent = parseInt(selection.target.feature.properties.new_cases);
-
-            $("#populationslide").html(parseInt(selection.target.feature.properties.pop_11));
-            $("#nameslide").html(selection.target.feature.properties.NAME_GR);
-            $("#numberslide").html(parseInt(selection.target.feature.properties.new_cases));
-
-
         }
 
         //***********************Search Functions**************
@@ -319,52 +343,52 @@
         <div class="col-lg-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <span class="label label-success pull-right">Monthly</span>
-                    <h5>Περιφερειακή ενότητα:</h5>
+                    <span class="label label-success pull-right">Νέοι θάνατοι</span>
+                    <h5>Θάνατοι σήμερα</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins" id="nameslide"></h1>
-                    <div class="stat-percent font-bold text-success">98% <i class="fa fa-bolt"></i></div>
-                    <small>Total income</small>
+                    <h1 class="no-margins" id="deathstoday"></h1>
+                    <div class="stat-percent font-bold text-success" id="deathstodaypercent"> <i class="fa fa-bolt"></i></div>
+                    <small>Θάνατοι</small>
                 </div>
             </div>
         </div>
         <div class="col-lg-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <span class="label label-info pull-right">Annual</span>
-                    <h5>Πληθυσμός</h5>
+                    <span class="label label-info pull-right">Σήμερα</span>
+                    <h5>Σημερινά κρούσματα</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins" id="populationslide"></h1>
-                    <div class="stat-percent font-bold text-info">20% <i class="fa fa-level-up"></i></div>
-                    <small>New orders</small>
+                    <h1 class="no-margins" id="casestoday"></h1>
+                    <div class="stat-percent font-bold text-info" id="casestodaypercent"><i class="fa fa-level-up"></i></div>
+                    <small>Κρούσματα</small>
                 </div>
             </div>
         </div>
         <div class="col-lg-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <span class="label label-primary pull-right">Today</span>
-                    <h5>New Cases</h5>
+                    <span class="label label-primary pull-right">Εκτίμηση</span>
+                    <h5>Νεα τεστ</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins" id="numberslide"></h1>
-                    <div class="stat-percent font-bold text-navy">44% <i class="fa fa-level-up"></i></div>
-                    <small>New visits</small>
+                    <h1 class="no-margins" id="newtesttoday"></h1>
+                    <div class="stat-percent font-bold text-navy" id="newtesttodaypercent"> <i class="fa fa-level-up"></i></div>
+                    <small>Κατά προσέγγιση</small>
                 </div>
             </div>
         </div>
         <div class="col-lg-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <span class="label label-danger pull-right">Low value</span>
-                    <h5>User activity</h5>
+                    <span class="label label-danger pull-right">Σύνολο πληθυσμού</span>
+                    <h5>Σύνολο κρουσμάτων</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins">80,600</h1>
-                    <div class="stat-percent font-bold text-danger">38% <i class="fa fa-level-down"></i></div>
-                    <small>In first month</small>
+                    <h1 class="no-margins" id="totalfrombegin"></h1>
+                    <div class="stat-percent font-bold text-danger"></div>
+                    <small>Απο την αρχή της πανδημίας</small>
                 </div>
             </div>
         </div>
