@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewData["Title"] = "Home Page";
+}
+@inject IViewLocalizer T
+
+
+@section Styles {
+    <link rel="stylesheet" href="~/lib/leaflet/leaflet.min.css" />
+    <link href="~/css/Leaflet.PolylineMeasure.css" rel="stylesheet" />
+    <link href="~/css/L.Control.Sidebar.css" rel="stylesheet" />
+    <link href="~/css/L.Control.Sidebar.css" rel="stylesheet" />
+    <link href="~/css/easy-button.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/leaflet-fullscreen/Control.FullScreen.css" />
+    <style type="text/css">
+        #map {
+            height: 800px;
+            margin: 20px 20px 0 0;
+        }
+
+        .col-xs-12, .col-xs-12, .col-xs-4 {
+            padding: 3px;
+        }
+
+        #divProject {
+            background-color: beige;
+        }
+
+        .errorMsg {
+            padding: 0;
+            text-align: center;
+            background-color: darksalmon;
+        }
+    </style>
+}
+
+
+@section Scripts {
+    <script type="text/javascript" src="~/lib/jquery-csv/jquery.csv.min.js"></script>
+    <script src="https://use.fontawesome.com/6024ab1387.js"></script>
+    <script type="text/javascript" src="~/lib/leaflet/leaflet.min.js"></script>
+    <script type="text/javascript" src="~/lib/leaflet/leaflet.js"></script>
+    <script type="text/javascript" src="~/lib/leaflet-fullscreen/Control.FullScreen.min.js"></script>
+    <script src="~/js/leaflet.ajax.min.js"></script>
+    <script src="~/lib/leaflet/plugins/L.Control.Sidebar.js"></script>
+    <script src="~/lib/leaflet/plugins/L.Control.Sidebar.js"></script>
+    <script src="~/lib/leaflet/plugins/easy-button.js"></script>
+    <script src="~/lib/leaflet/plugins/Leaflet.PolylineMeasure.js"></script>
+    <script src="~/lib/leaflet/plugins/leaflet-providers.js"></script>
+    <script type="text/javascript">
+
+
+
+
+        $(document).ready(function () {
+
+            getData();
+
+
+            async function getData() {
+                const responce = await fetch('https://raw.githubusercontent.com/iMEdD-Lab/open-data/master/COVID-19/greeceTimeline.csv');
+                const text = await responce.text();
+                const coviddata = $.csv.toObjects(text);
+                console.log(coviddata);
+            }
+
+
+
+
+        });
+
+    </script>
+
+}
+

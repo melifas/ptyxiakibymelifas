@@ -117,9 +117,14 @@
 
             $.when(
                 $.getJSON('/data/nomoi.json'),
-                $.get('https://raw.githubusercontent.com/iMEdD-Lab/open-data/master/COVID-19/greece_latest.csv')
-            ).then(function (result1, result2) {
+                $.get('https://raw.githubusercontent.com/iMEdD-Lab/open-data/master/COVID-19/greece_latest.csv'),
+                $.get('https://raw.githubusercontent.com/iMEdD-Lab/open-data/master/COVID-19/greeceTimeline.csv')
+            ).then(function (result1, result2,result3) {
                 let coviddata = $.csv.toObjects(result2[0]);
+                let statisticdata = $.csv.toArrays(result3[0]);
+                console.log(statisticdata)
+
+
 
                 for (let i = 0; i < result1[0].features.length; i++) {
                     let foundIndex = coviddata.findIndex(function (l) {
