@@ -122,16 +122,12 @@
             ).then(function (result1, result2,result3) {
                 let coviddata = $.csv.toObjects(result2[0]);
                 let statisticdata = $.csv.toArrays(result3[0]);
-                
-
                 let covidcasestoday = statisticdata[1][statisticdata[1].length-1];
                 let covidcasesyesterday = statisticdata[1][statisticdata[1].length-2];
-                
                 let percentcovid = Math.round(((covidcasestoday - covidcasesyesterday) / covidcasesyesterday)*100);
 
                 $("#casestoday").html(parseInt(covidcasestoday));
                 $("#casestodaypercent").html(parseInt(percentcovid)+'%');
-
 
                 let deathstoday = statisticdata[2][statisticdata[2].length-1];
                 let deathsyesterday = statisticdata[2][statisticdata[2].length-2];
@@ -140,8 +136,6 @@
 
                 $("#deathstoday").html(parseInt(deathstoday));
                 $("#deathstodaypercent").html(parseInt(percentdeaths)+'%');
-
-
 
                 let newteststoday = statisticdata[11][statisticdata[11].length-1];
                 let newtestsyesterday = statisticdata[11][statisticdata[11].length-2];
