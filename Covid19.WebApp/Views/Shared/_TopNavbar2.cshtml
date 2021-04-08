@@ -1,4 +1,5 @@
-﻿<div class="row border-bottom white-bg">
+﻿@inject IViewLocalizer T
+<div class="row border-bottom white-bg">
     <nav class="navbar navbar-static-top" role="navigation">
         <div class="navbar-header">
             <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
@@ -9,16 +10,7 @@
         <div class="navbar-collapse collapse" id="navbar">
             <ul class="nav navbar-nav">
                 <li class="active">
-                    <a aria-expanded="false" role="button" href="@Url.Action("Index", "Home")"> Αρχική Σελίδα</a>
-                </li>
-                <li class="active">
-                    <a aria-expanded="false" role="button" href="@Url.Action("AvailableParkingTypes", "Home")"> Διαθεσιμοτητα</a>
-                </li>
-                <li class="active">
-                    <a aria-expanded="false" role="button" href="@Url.Action("searchBooking", "SearchBooikings")">Αναζητηση</a>
-                </li>
-                <li class="active">
-                    <a aria-expanded="false" role="button" href="@Url.Action("Contact", "Home")">Επικοινωνια</a>
+                    <a aria-expanded="false" role="button" href="@Url.Action("Index", "Home")">@T["Home"]</a>
                 </li>
                 @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
                 {

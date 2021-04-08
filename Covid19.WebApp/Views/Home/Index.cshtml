@@ -1,8 +1,9 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@{
     Layout = null;
 }
 
-
+@inject SignInManager<IdentityUser> SignInManager
 @inject IViewLocalizer T
 
 <!DOCTYPE html>
@@ -44,11 +45,10 @@
                 <div id="navbar" class="navbar-collapse collapse">
 
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a class="page-scroll" asp-area="" asp-controller="Home" asp-action="covid">@T["Home"]</a></li>
-                        <li><a class="page-scroll" href="#features">Features</a></li>
-                        <li><a class="page-scroll" href="#team">"@T["Map"]</a></li>
-                        <li><a class="page-scroll" href="#testimonials">Testimonials</a></li>
-                        <li><a class="page-scroll" href="#contact">Contact</a></li>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li><a class="page-scroll" asp-area="" asp-controller="Home" asp-action="covid">@T["Map"]</a></li>
+                        }
                         <li><partial name="_LoginPartial" /></li>
                         <li><partial name="LanguageSelection" /></li>
                     </ul>
@@ -56,79 +56,75 @@
             </div>
         </nav>
     </div>
-<div id="inSlider" class="carousel carousel-fade" data-ride="carousel">
-    <ol class="carousel-indicators">
-        <li data-target="#inSlider" data-slide-to="0" class="active"></li>
-        <li data-target="#inSlider" data-slide-to="1"></li>
-    </ol>
-    <div class="carousel-inner" role="listbox">
-        <div class="item active">
-            <div class="container">
-                <div class="carousel-caption">
-                    <h1>
-                        Covid-19<br />
-                        @T["Responsive Map"]<br />
-                        @T["Dashboard by Region"]<br />
-                        @T["Hellenic Territory"]
-                    </h1>
-                    <p>@T["Covers in total the Hellenic Territory"]</p>
-                    <p>
-                        <a class="btn btn-lg btn-primary" href="#" role="button">@T["Learn more"]</a>
+    <div id="inSlider" class="carousel carousel-fade" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#inSlider" data-slide-to="0" class="active"></li>
+            <li data-target="#inSlider" data-slide-to="1"></li>
+        </ol>
+        <div class="carousel-inner" role="listbox">
+            <div class="item active">
+                <div class="container">
+                    <div class="carousel-caption">
+                        <h1>
+                            Covid-19<br />
+                            @T["Responsive Map"]<br />
+                            @T["Dashboard by Region"]<br />
+                            @T["Hellenic Territory"]
+                        </h1>
+                        <p>@T["Covers in total the Hellenic Territory"]</p>
+                        <p>
+                            <a class="btn btn-lg btn-primary" href="#" role="button">@T["Learn more"]</a>
 
-                    </p>
-                </div>
-                <div class="carousel-image wow zoomIn">
-                    <img src="~/landing/laptop.png" />
+                        </p>
+                    </div>
+                    <div class="carousel-image wow zoomIn">
+                        <img src="~/landing/laptop.png" />
 
+                    </div>
                 </div>
+                <!-- Set background for slide in css -->
+                <div class="header-back one"></div>
+
             </div>
-            <!-- Set background for slide in css -->
-            <div class="header-back one"></div>
-
-        </div>
-        <div class="item">
-            <div class="container">
-                <div class="carousel-caption blank">
-                    <h1>@T["View statistics"] <br /> @T["Updated daily"]</h1>
-                    <p>@T["Search cases by region"]</p>
-                    <p><a class="btn btn-lg btn-primary" href="#" role="button">@T["Learn more"]</a></p>
+            <div class="item">
+                <div class="container">
+                    <div class="carousel-caption blank">
+                        <h1>@T["View statistics"] <br /> @T["Updated daily"]</h1>
+                        <p>@T["Search cases by region"]</p>
+                        <p><a class="btn btn-lg btn-primary" href="#" role="button">@T["Learn more"]</a></p>
+                    </div>
                 </div>
+                <!-- Set background for slide in css -->
+                <div class="header-back two"></div>
             </div>
-            <!-- Set background for slide in css -->
-            <div class="header-back two"></div>
         </div>
+        <a class="left carousel-control" href="#inSlider" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#inSlider" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
     </div>
-    <a class="left carousel-control" href="#inSlider" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#inSlider" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
-</div>
 
-<section id="features" class="container services">
+    <section id="features" class="container services">
         <div class="row">
             <div class="col-sm-3">
                 <h2>@T["Fully responsive"]</h2>
                 <p>@T["A responsive map of hellenic terrtory with lots of features"]</p>
-                <p><a class="navy-link" href="#" role="button">Details &raquo;</a></p>
             </div>
             <div class="col-sm-3">
                 <h2>@T["View statistics"]</h2>
                 <p>@T["Covid 19 statistics daily updated"] </p>
-                <p><a class="navy-link" href="#" role="button">Details &raquo;</a></p>
             </div>
             <div class="col-sm-3">
                 <h2>@T["Search capabilities"]</h2>
                 <p>@T["Find easily your region with the advanced search capabilities"]</p>
-                <p><a class="navy-link" href="#" role="button">Details &raquo;</a></p>
             </div>
             <div class="col-sm-3">
                 <h2>@T["Daily updated"]</h2>
                 <p>@T["Daily updated statistics for various fields such as new cases, new tests , new deaths and other various usefull information"]</p>
-                <p><a class="navy-link" href="#" role="button">Details &raquo;</a></p>
             </div>
         </div>
     </section>
@@ -219,7 +215,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 text-center m-t-lg m-b-lg">
-                    <p><strong>&copy; 2015 Company Name</strong><br /> consectetur adipisicing elit. Aut eaque, laboriosam veritatis, quos non quis ad perspiciatis, totam corporis ea, alias ut unde.</p>
+                    <p><strong>&copy; 2021 Meletios Fasoulis</strong></p>
                 </div>
             </div>
         </div>

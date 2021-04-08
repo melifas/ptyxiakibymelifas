@@ -127,7 +127,7 @@
     <value>Καθαρισμός επιλογής</value>
   </data>
   <data name="Covers in total the Hellenic Territory" xml:space="preserve">
-    <value>Καλύπτει πλήρως την Ελληνική επικράτεια</value>
+    <value>Καλυπτει πληρως την Ελληνικη επικρατεια</value>
   </data>
   <data name="Covid 19 statistics daily updated" xml:space="preserve">
     <value>Στατιστικα δεδομενα της πανδημιας καθημερινα ενημερωμενα</value>
@@ -158,6 +158,9 @@
   </data>
   <data name="Hellenic Territory" xml:space="preserve">
     <value>Ελληνική επικράτεια</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Κεντρικη</value>
   </data>
   <data name="Learn more" xml:space="preserve">
     <value>Περισσοτερα</value>
