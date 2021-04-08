@@ -8,7 +8,7 @@ namespace Covid19.WebApp.ViewModels.Account
 {
     public class RegisterViewModel
     {
-        [Required]
+        [Required()]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -23,5 +23,9 @@ namespace Covid19.WebApp.ViewModels.Account
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required(ErrorMessage = "Please answer to question")]
+        [Display(Name = "Do you want to vaccine?")]
+        public bool wantVaccine { get; set; }
     }
 }

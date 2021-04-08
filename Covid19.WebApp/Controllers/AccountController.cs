@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Covid19.WebApp.Models;
 using Covid19.WebApp.Services;
 using Covid19.WebApp.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
@@ -14,14 +15,14 @@ namespace Covid19.WebApp.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IMailService _mailService;
         private readonly IHtmlLocalizer<AccountController> _T;
 
 
-        public AccountController(UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager, IMailService mailService,
+        public AccountController(UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager, IMailService mailService,
             IHtmlLocalizer<AccountController> T)
         {
             _userManager = userManager;
@@ -78,7 +79,7 @@ namespace Covid19.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser() { UserName = model.Email };
+                var user = new ApplicationUser() { UserName = model.Email };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
