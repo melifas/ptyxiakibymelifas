@@ -71,8 +71,8 @@ namespace Covid19.WebApp.Data.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.Property<bool>("wantVaccine")
-                        .HasColumnType("bit");
+                    b.Property<string>("wantVaccine")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

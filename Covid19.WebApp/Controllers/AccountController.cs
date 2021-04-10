@@ -69,6 +69,7 @@ namespace Covid19.WebApp.Controllers
         [AllowAnonymous]
         public IActionResult Register()
         {
+            ViewBag.want = new List<string>() {"Yes i would like", "No i would not like", "I am not sure yet"};
             return View();
         }
 
@@ -79,11 +80,14 @@ namespace Covid19.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() { UserName = model.Email };
+                ViewBag.want = new List<string>() { "Yes i would like", "No i would not like", "I am not sure yet" };
+
+                var user = new ApplicationUser() { UserName = model.Email, wantVaccine = model.wantVaccine};
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
+
                 {
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 

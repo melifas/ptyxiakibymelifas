@@ -8,6 +8,6 @@ namespace Covid19.WebApp.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        public bool wantVaccine { get; set; }
+        public string wantVaccine { get; set; }
     }
 }

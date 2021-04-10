@@ -120,6 +120,9 @@
   <data name="A responsive map of hellenic terrtory with lots of features" xml:space="preserve">
     <value>Ενας διαδραστικος χαρτης της Ελληνικης επικρατειας με πολλες διαδραστικες δυνατοτητες</value>
   </data>
+  <data name="And interact with our map" xml:space="preserve">
+    <value>Και δειτε τον χαρτη μας</value>
+  </data>
   <data name="Cases" xml:space="preserve">
     <value>Κρούσματα</value>
   </data>
@@ -134,6 +137,9 @@
   </data>
   <data name="Covid-19 Dashboard by Region" xml:space="preserve">
     <value>Χάρτης υγειονομικής ασφάλειαςαπο την λοίμωξη Covid-19</value>
+  </data>
+  <data name="Create an account" xml:space="preserve">
+    <value>Δημιουργειστε λογαριασμο</value>
   </data>
   <data name="Daily updated" xml:space="preserve">
     <value>Καθημερινά ενημερωμένα</value>

@@ -26,6 +26,6 @@ namespace Covid19.WebApp.ViewModels.Account
 
         [Required(ErrorMessage = "Please answer to question")]
         [Display(Name = "Do you want to vaccine?")]
-        public bool wantVaccine { get; set; }
+        public string wantVaccine { get; set; }
     }
 }

@@ -126,4 +126,10 @@
   <data name="Login using an account" xml:space="preserve">
     <value>Είσοδος με λογαριασμό</value>
   </data>
+  <data name="Not registered yet?" xml:space="preserve">
+    <value>Δεν έχετε εγγραφει ακόμη;</value>
+  </data>
+  <data name="You can create an account:" xml:space="preserve">
+    <value>Δημιουργείστε λογαριασμό</value>
+  </data>
 </root>

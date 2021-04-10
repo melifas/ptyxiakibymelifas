@@ -120,6 +120,9 @@
   <data name="Create a new account" xml:space="preserve">
     <value>Δημιουργία λογαριασμού</value>
   </data>
+  <data name="Do you want to vaccine?" xml:space="preserve">
+    <value>Θα επιθυμούσατε να εμβολιασείτε</value>
+  </data>
   <data name="Register" xml:space="preserve">
     <value>Εγγραφή</value>
   </data>
