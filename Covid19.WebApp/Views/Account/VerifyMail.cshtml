@@ -1,2 +1,4 @@
-﻿<h2>Thank you for verifing your email</h2>
-<a asp-action="Login" asp-controller="Account">Click here to Log In</a>
+﻿@inject IViewLocalizer T
+
+<h2>@T["Thank you for verifing your email"]</h2>
+<a asp-action="Login" asp-controller="Account">@T["Click here to Log In"]</a>
