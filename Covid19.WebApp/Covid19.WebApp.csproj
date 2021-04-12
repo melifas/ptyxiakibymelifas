@@ -50,6 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Remove="Resources\Views\Account\ResourceForgotPasswordConfirmation.el-GR.resx" />
     <EmbeddedResource Remove="Resources\Views\Shared\LanguageSelection.el-GR.resx" />
   </ItemGroup>
 
@@ -60,6 +61,7 @@
     <PackageReference Include="BundlerMinifier.TagHelpers" Version="3.2.449" />
     <PackageReference Include="DotFramework.Core.Web.Optimization" Version="3.4.8" />
     <PackageReference Include="GeoJSON.Net" Version="1.2.19" />
+    <PackageReference Include="Microsoft.AspNet.Providers.Core" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNet.Web.Optimization" Version="1.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.13" />
@@ -76,6 +78,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Resources\Views\Account\ResourceForgotPasswordConfirmation.el-GR.resx" />
     <None Include="Resources\Views\Shared\LanguageSelection.el-GR.resx" />
     <None Include="wwwroot\fonts\font-awesome\css\font-awesome.css" />
     <None Include="wwwroot\fonts\font-awesome\css\font-awesome.min.css" />

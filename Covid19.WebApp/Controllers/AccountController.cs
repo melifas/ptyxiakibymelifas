@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Covid19.WebApp.Models;
 using Covid19.WebApp.Services;
@@ -9,6 +11,8 @@ using Covid19.WebApp.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Web.Providers.Entities;
 
 namespace Covid19.WebApp.Controllers
 {
@@ -82,7 +86,7 @@ namespace Covid19.WebApp.Controllers
             {
                 ViewBag.want = new List<string>() { "Yes i would like", "No i would not like", "I am not sure yet" };
 
-                var user = new ApplicationUser() { UserName = model.Email, wantVaccine = model.wantVaccine};
+                var user = new ApplicationUser() { UserName = model.Email,Email = model.Email, wantVaccine = model.wantVaccine};
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
@@ -134,5 +138,163 @@ namespace Covid19.WebApp.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPassword()
+        {
+            return this.View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel viewModel)
+        {
+            if (this.ModelState.IsValid)
+            {
+                var user = await this._userManager.FindByEmailAsync(viewModel.Input.Email)
+                    .ConfigureAwait(false);
+                if (user == null)
+                {
+                    return this.RedirectToAction("ForgotPasswordConfirmation");
+                }
+
+                var tokenGenerated = await this._userManager.GeneratePasswordResetTokenAsync(user)
+                    .ConfigureAwait(false);
+                var encodedCode = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(tokenGenerated));
+
+                var callbackUrl = this.Url.Action("ResetPassword",
+                    "Account",
+                    new
+                    {
+                        encodedCode
+                    },
+                    this.Request.Scheme);
+
+                await _mailService.SendEmailAsync(viewModel.Input.Email,
+                        "Reset Password",
+                        $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.")
+                    .ConfigureAwait(false);
+
+                return this.RedirectToAction("ForgotPasswordConfirmation");
+            }
+
+            return this.View();
+        }
+
+        
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return this.View();
+        }
+
+        
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string encodedCode = null)
+        {
+            if (encodedCode == null)
+            {
+                return this.BadRequest("A code must be supplied for password reset.");
+            }
+
+            var codeDecodedBytes = WebEncoders.Base64UrlDecode(encodedCode);
+            var codeDecoded = Encoding.UTF8.GetString(codeDecodedBytes);
+
+            var viewModel = new ResetPasswordViewModel
+            {
+                Input = new ResetPasswordInputViewModel(),
+                Code = codeDecoded
+            };
+
+            return this.View(viewModel);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel viewModel)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View();
+            }
+
+            var user = await this._userManager.FindByEmailAsync(viewModel.Input.Email)
+                .ConfigureAwait(false);
+            if (user == null)
+            {
+                return this.RedirectToAction("ResetPasswordConfirmation");
+            }
+
+            var result = await this._userManager.ResetPasswordAsync(user, viewModel.Code, viewModel.Input.Password)
+                .ConfigureAwait(false);
+
+            if (result.Succeeded)
+            {
+                return this.RedirectToAction("ResetPasswordConfirmation");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                this.ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return this.View(viewModel);
+        }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPasswordConfirmation()
+        {
+            return this.View();
+        }
+
+        //[Route("account/sendverificationemail")]
+        //[HttpPost]
+        //[AllowAnonymous]
+        //public async Task<IActionResult> SendVerificationEmail(LoginViewModel viewModel)
+        //{
+        //    if (!this.ModelState.IsValid)
+        //    {
+        //        return this.LocalRedirect("~/");
+        //    }
+
+        //    var user = await this._userManager.FindByEmailAsync(viewModel.Input.Email)
+        //        .ConfigureAwait(false);
+        //    if (user == null)
+        //    {
+        //        this.ModelState.AddModelError(string.Empty, this.T["Verification email sent. Please check your email."]);
+        //    }
+
+        //    var userId = await this._userManager.GetUserIdAsync(user)
+        //        .ConfigureAwait(false);
+        //    var tokenGenerated = await this._userManager.GenerateEmailConfirmationTokenAsync(user)
+        //        .ConfigureAwait(false);
+        //    var tokenGeneratedBytes = Encoding.UTF8.GetBytes(tokenGenerated);
+        //    var code = WebEncoders.Base64UrlEncode(tokenGeneratedBytes);
+
+        //    var callbackUrl = this.Url.Action("ConfirmEmail",
+        //        "Account",
+        //        new
+        //        {
+        //            userId,
+        //            code
+        //        },
+        //        this.Request.Scheme);
+        //    await this._emailSender.SendEmailAsync(viewModel.Input.Email,
+        //            "Confirm your email",
+        //            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.")
+        //        .ConfigureAwait(false);
+
+        //    this.ModelState.AddModelError(string.Empty, this.T["Verification email sent. Please check your email."]);
+
+        //    return this.View(nameof(Login), viewModel);
+        //}
+
+
+
     }
 }

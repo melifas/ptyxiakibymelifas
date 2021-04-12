@@ -1,6 +1,6 @@
-﻿<h3>
-    An occured while processing your request. The support
-    team is notified and we are working on the fix
+﻿@inject IViewLocalizer T
+<h3>
+    @T["An occured while processing your request"]
 </h3>
 <a asp-controller="home" asp-action="index" class="btn btn-outline-success"
-   style="width:auto">Back to safety</a>
+   style="width:auto">@T["Back to safety"]</a>
