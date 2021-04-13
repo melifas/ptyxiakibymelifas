@@ -74,11 +74,6 @@ namespace Covid19.WebApp
 
             services.AddTransient<IMailService, MailService>();
 
-            //services.AddBundles(options =>
-            //{
-            //    options.AppendVersion = true;
-            //});
-
             services.AddRazorPages();
         }
 
