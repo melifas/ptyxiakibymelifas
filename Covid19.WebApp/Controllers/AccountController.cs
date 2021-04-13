@@ -252,49 +252,5 @@ namespace Covid19.WebApp.Controllers
             return this.View();
         }
 
-        //[Route("account/sendverificationemail")]
-        //[HttpPost]
-        //[AllowAnonymous]
-        //public async Task<IActionResult> SendVerificationEmail(LoginViewModel viewModel)
-        //{
-        //    if (!this.ModelState.IsValid)
-        //    {
-        //        return this.LocalRedirect("~/");
-        //    }
-
-        //    var user = await this._userManager.FindByEmailAsync(viewModel.Input.Email)
-        //        .ConfigureAwait(false);
-        //    if (user == null)
-        //    {
-        //        this.ModelState.AddModelError(string.Empty, this.T["Verification email sent. Please check your email."]);
-        //    }
-
-        //    var userId = await this._userManager.GetUserIdAsync(user)
-        //        .ConfigureAwait(false);
-        //    var tokenGenerated = await this._userManager.GenerateEmailConfirmationTokenAsync(user)
-        //        .ConfigureAwait(false);
-        //    var tokenGeneratedBytes = Encoding.UTF8.GetBytes(tokenGenerated);
-        //    var code = WebEncoders.Base64UrlEncode(tokenGeneratedBytes);
-
-        //    var callbackUrl = this.Url.Action("ConfirmEmail",
-        //        "Account",
-        //        new
-        //        {
-        //            userId,
-        //            code
-        //        },
-        //        this.Request.Scheme);
-        //    await this._emailSender.SendEmailAsync(viewModel.Input.Email,
-        //            "Confirm your email",
-        //            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.")
-        //        .ConfigureAwait(false);
-
-        //    this.ModelState.AddModelError(string.Empty, this.T["Verification email sent. Please check your email."]);
-
-        //    return this.View(nameof(Login), viewModel);
-        //}
-
-
-
     }
 }
