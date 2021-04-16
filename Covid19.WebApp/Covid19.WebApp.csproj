@@ -51,6 +51,8 @@
 
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Views\Account\ResourceForgotPasswordConfirmation.el-GR.resx" />
+    <EmbeddedResource Remove="Resources\Views\Error\Error.el-GR.RESX" />
+    <EmbeddedResource Remove="Resources\Views\Error\NotFound.el-GR.resx" />
     <EmbeddedResource Remove="Resources\Views\Shared\LanguageSelection.el-GR.resx" />
   </ItemGroup>
 
@@ -79,6 +81,10 @@
 
   <ItemGroup>
     <None Include="Resources\Views\Account\ResourceForgotPasswordConfirmation.el-GR.resx" />
+    <None Include="Resources\Views\Error\NotFound.el-GR.resx">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\Views\Error\Error.el-GR.resx" />
     <None Include="Resources\Views\Shared\LanguageSelection.el-GR.resx" />
     <None Include="wwwroot\fonts\font-awesome\css\font-awesome.css" />
     <None Include="wwwroot\fonts\font-awesome\css\font-awesome.min.css" />
