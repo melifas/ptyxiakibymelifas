@@ -8,6 +8,7 @@
     <link href="~/css/Leaflet.PolylineMeasure.css" rel="stylesheet" />
     <link href="~/css/L.Control.Sidebar.css" rel="stylesheet" />
     <link href="~/css/L.Control.Sidebar.css" rel="stylesheet" />
+    <link href="~/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
     <link href="~/css/easy-button.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/leaflet-fullscreen/Control.FullScreen.css" />
     <style type="text/css">
@@ -34,6 +35,8 @@
 
 
 @section Scripts {
+    <script src="~/plugins/morris/morris.js"></script>
+    <script src="~/plugins/morris/raphael-2.1.0.min.js"></script>
     <script type="text/javascript" src="~/lib/jquery-csv/jquery.csv.min.js"></script>
     <script src="https://use.fontawesome.com/6024ab1387.js"></script>
     <script type="text/javascript" src="~/lib/leaflet/leaflet.min.js"></script>
@@ -103,7 +106,7 @@
             dataLayer.on('data:loaded',
                 function () {
                     mymap.fitBounds(dataLayer.getBounds());
-                });
+            });
 
             ctlSidebar = L.control.sidebar('search-sidebar').addTo(mymap);
 
@@ -119,9 +122,10 @@
                 $.get('https://raw.githubusercontent.com/iMEdD-Lab/open-data/master/COVID-19/greece_latest.csv'),
                 $.get('https://raw.githubusercontent.com/iMEdD-Lab/open-data/master/COVID-19/greeceTimeline.csv')
             ).then(function (result1, result2,result3) {
+                debugger
                 let coviddata = $.csv.toObjects(result2[0]);
                 let statisticdata = $.csv.toArrays(result3[0]);
-                
+
                 let covidcasestoday = statisticdata[1][statisticdata[1].length-1];
                 let covidcasesyesterday = statisticdata[1][statisticdata[1].length-2];
                 let percentcovid = Math.round(((covidcasestoday - covidcasesyesterday) / covidcasesyesterday)*100);
@@ -170,6 +174,9 @@
                 dataLayer.clearLayers();
                 dataLayer.addData(result1[0].features);
             });
+
+
+            
 
         });
 

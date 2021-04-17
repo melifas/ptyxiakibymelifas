@@ -1234,7 +1234,7 @@ Licensed under the BSD-2-Clause License.
         return "" + (d.getFullYear()) + "-" + (Morris.pad2(d.getMonth() + 1));
       },
       incr: function(d) {
-        return d.setMonth(d.getMonth() + 1);
+        return d.setMonth(d.getMonth() + 3);
       }
     },
     "week": {

@@ -129,6 +129,9 @@
   <data name="Clear selection" xml:space="preserve">
     <value>Καθαρισμός επιλογής</value>
   </data>
+  <data name="Contact Us" xml:space="preserve">
+    <value>Επικοινωνια</value>
+  </data>
   <data name="Covers in total the Hellenic Territory" xml:space="preserve">
     <value>Καλυπτει πληρως την Ελληνικη επικρατεια</value>
   </data>
@@ -149,6 +152,9 @@
   </data>
   <data name="Dashboard by Region" xml:space="preserve">
     <value>Ανα περιφειακη ενοτητα</value>
+  </data>
+  <data name="Do you have a problem. Let us know and will fix it in no time" xml:space="preserve">
+    <value>Αντιμετωπίζεται πρόβλημα. Γνωστοποιήσετο και θα το λύσουμε αμμεσα</value>
   </data>
   <data name="Fill new cases" xml:space="preserve">
     <value>Εισάγεται αριθμό κρουσμάτων</value>
@@ -197,6 +203,12 @@
   </data>
   <data name="Search capabilities" xml:space="preserve">
     <value>Δυνατοτητα αναζητησης</value>
+  </data>
+  <data name="Send us mail" xml:space="preserve">
+    <value>Αποστολη mail</value>
+  </data>
+  <data name="Software developer" xml:space="preserve">
+    <value>Προγραμματιστής</value>
   </data>
   <data name="View statistics" xml:space="preserve">
     <value>Στατιστικα</value>

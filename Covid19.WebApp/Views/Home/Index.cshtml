@@ -19,10 +19,12 @@
     <link href="~/css/animate.css" rel="stylesheet" />
     <link href="~/css/style.css" rel="stylesheet" />
     <link href="~/css/bootstrap.css" rel="stylesheet" />
-
+    <link href="~/fonts/font-awesome/css/font-awesome.css" />
     <link href="/fonts/font-awesome/css/font-awesome.css" />
 
     <link href="~/plugins/jquery-ui/jquery-ui.css" rel="stylesheet" />
+
+
 </head>
 
 <body id="page-top" class="landing-page">
@@ -37,7 +39,6 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="@Url.Action("covid", "Home")">WEBAPPLAYERS</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
 
@@ -103,109 +104,81 @@
         </a>
     </div>
 
-    <section id="features" class="container services">
+<section id="features" class="container services">
+    <div class="row">
+        <div class="col-sm-3">
+            <h2>@T["Fully responsive"]</h2>
+            <p>@T["A responsive map of hellenic terrtory with lots of features"]</p>
+        </div>
+        <div class="col-sm-3">
+            <h2>@T["View statistics"]</h2>
+            <p>@T["Covid 19 statistics daily updated"] </p>
+        </div>
+        <div class="col-sm-3">
+            <h2>@T["Search capabilities"]</h2>
+            <p>@T["Find easily your region with the advanced search capabilities"]</p>
+        </div>
+        <div class="col-sm-3">
+            <h2>@T["Daily updated"]</h2>
+            <p>@T["Daily updated statistics for various fields such as new cases, new tests , new deaths and other various usefull information"]</p>
+        </div>
+    </div>
+</section>
+
+<section id="team" class="gray-section team">
+    <div class="container">
+        <div class="row m-b-lg">
+            <div class="col-lg-12 text-center">
+                <div class="navy-line"></div>
+                <h1>Fasoulis Meletios</h1>
+                <p>@T["Software developer"]</p>
+            </div>
+        </div>
         <div class="row">
-            <div class="col-sm-3">
-                <h2>@T["Fully responsive"]</h2>
-                <p>@T["A responsive map of hellenic terrtory with lots of features"]</p>
-            </div>
-            <div class="col-sm-3">
-                <h2>@T["View statistics"]</h2>
-                <p>@T["Covid 19 statistics daily updated"] </p>
-            </div>
-            <div class="col-sm-3">
-                <h2>@T["Search capabilities"]</h2>
-                <p>@T["Find easily your region with the advanced search capabilities"]</p>
-            </div>
-            <div class="col-sm-3">
-                <h2>@T["Daily updated"]</h2>
-                <p>@T["Daily updated statistics for various fields such as new cases, new tests , new deaths and other various usefull information"]</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="features">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="navy-line"></div>
-                    <h1>More and more extra great feautres</h1>
-                    <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. </p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-5 col-lg-offset-1 features-text">
-                    <small>INSPINIA</small>
-                    <h2>Perfectly designed </h2>
-                    <i class="fa fa-bar-chart big-icon pull-right"></i>
-                    <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with.</p>
-                </div>
-                <div class="col-lg-5 features-text">
-                    <small>INSPINIA</small>
-                    <h2>Perfectly designed </h2>
-                    <i class="fa fa-bolt big-icon pull-right"></i>
-                    <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with.</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-5 col-lg-offset-1 features-text">
-                    <small>INSPINIA</small>
-                    <h2>Perfectly designed </h2>
-                    <i class="fa fa-clock-o big-icon pull-right"></i>
-                    <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with.</p>
-                </div>
-                <div class="col-lg-5 features-text">
-                    <small>INSPINIA</small>
-                    <h2>Perfectly designed </h2>
-                    <i class="fa fa-users big-icon pull-right"></i>
-                    <p>INSPINIA Admin Theme is a premium admin dashboard template with flat design concept. It is fully responsive admin dashboard template built with Bootstrap 3+ Framework, HTML5 and CSS3, Media query. It has a huge collection of reusable UI components and integrated with.</p>
+            <div class="col-sm-12">
+                <div class="team-member wow zoomIn">
+                    <img src="~/landing/fasoulis.jpg" class="img-responsive img-circle" alt="">
+                    <h4><span class="navy">Meletios</span> Fasoulis</h4>
                 </div>
             </div>
         </div>
+    </div>
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 text-center m-t-lg m-b-lg">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut eaque, laboriosam veritatis, quos non quis ad perspiciatis, totam corporis ea, alias ut unde.</p>
+            </div>
+        </div>
+</section>
 
-    </section>
 
-    <section id="contact" class="gray-section contact">
+<section id="contact" class="gray-section contact">
         <div class="container">
             <div class="row m-b-lg">
                 <div class="col-lg-12 text-center">
                     <div class="navy-line"></div>
-                    <h1>Contact Us</h1>
-                    <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p>
+                    <h1>@T["Contact Us"]</h1>
+                    <p>@T["Do you have a problem. Let us know and will fix it in no time"]</p>
                 </div>
             </div>
             <div class="row m-b-lg">
                 <div class="col-lg-3 col-lg-offset-3">
                     <address>
-                        <strong><span class="navy">Company name, Inc.</span></strong><br />
-                        795 Folsom Ave, Suite 600<br />
-                        San Francisco, CA 94107<br />
+                        <strong><span class="navy">Fasoulis, Inc.</span></strong><br />
+                        Thermopilon 24<br />
+                        Salamis, CA 18900<br />
                         <abbr title="Phone">P:</abbr> (123) 456-7890
                     </address>
                 </div>
-                <div class="col-lg-4">
+                @*<div class="col-lg-4">
                     <p class="text-color">
-                        Consectetur adipisicing elit. Aut eaque, totam corporis laboriosam veritatis quis ad perspiciatis, totam corporis laboriosam veritatis, consectetur adipisicing elit quos non quis ad perspiciatis, totam corporis ea,
+                        
                     </p>
-                </div>
+                </div>*@
             </div>
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <a href="mailto:test@email.com" class="btn btn-primary">Send us mail</a>
-                    <p class="m-t-sm">
-                        Or follow us on social platform
-                    </p>
-                    <ul class="list-inline social-icon">
-                        <li>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-linkedin"></i></a>
-                        </li>
-                    </ul>
+                    <a href="mailto:test@email.com" class="btn btn-primary">@T["Send us mail"]</a>
+                    
                 </div>
             </div>
             <div class="row">
@@ -232,8 +205,10 @@
     <script src="plugins/flot/curvedLines.js"></script>
     <script src="plugins/flot/excanvas.min.js"></script>
     <script src="plugins/chartJs/Chart.min.js"></script>
-    <script src="plugins/sparkline/jquery.sparkline.min.js"></script>
-    <script src="plugins/peity/jquery.peity.min.js"></script>
 
+    <script src="plugins/sparkline/jquery.sparkline.min.js"></script>
+    <environment include="Development">
+        <script src="/lib/fontawesome-free-5.15.3-web/js/all.js"></script>
+    </environment>
 </body>
 </html>
