@@ -156,7 +156,7 @@ namespace Covid19.WebApp.Controllers
                     .ConfigureAwait(false);
                 if (user == null)
                 {
-                    return this.RedirectToAction("ForgotPasswordConfirmation");
+                    return this.RedirectToAction("NoUser");
                 }
 
                 var tokenGenerated = await this._userManager.GeneratePasswordResetTokenAsync(user)
@@ -186,6 +186,13 @@ namespace Covid19.WebApp.Controllers
         [HttpGet]
         [AllowAnonymous]
         public IActionResult ForgotPasswordConfirmation()
+        {
+            return this.View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult NoUser()
         {
             return this.View();
         }

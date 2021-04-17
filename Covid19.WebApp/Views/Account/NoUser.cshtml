@@ -1,0 +1,8 @@
+﻿@inject IViewLocalizer T
+@{
+    this.ViewData["Title"] = T["Access denied"];
+}
+<header>
+    <h1 class="text-danger">@T["Access denied"]</h1>
+    <p class="text-danger">@(T["The mail does not exist. Please try again"])</p>
+</header>
