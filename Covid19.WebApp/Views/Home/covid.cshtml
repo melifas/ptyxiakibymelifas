@@ -122,7 +122,6 @@
                 $.get('https://raw.githubusercontent.com/iMEdD-Lab/open-data/master/COVID-19/greece_latest.csv'),
                 $.get('https://raw.githubusercontent.com/iMEdD-Lab/open-data/master/COVID-19/greeceTimeline.csv')
             ).then(function (result1, result2,result3) {
-                debugger
                 let coviddata = $.csv.toObjects(result2[0]);
                 let statisticdata = $.csv.toArrays(result3[0]);
 
@@ -248,30 +247,37 @@
 
         //***********************Search Functions**************
 
-        function returnGraveById(id) {
+        function returnLayerById(id) {
             var number = parseInt(id);
             var aLayers = dataLayer.getLayers();
-
+            var multilayer = [];
             for (var i = 0; i < aLayers.length - 1; i++) {
-                debugger;
+                
                 var featureId = parseInt(aLayers[i].feature.properties.new_cases);
                 if (featureId === number) {
-                    return aLayers[i];
+                    multilayer.push( aLayers[i]);
                 }
             }
-            return false;
+            if (multilayer.length === 0) {
+                return false
+            } else {
+                return multilayer;
+            }
         }
 
 
         $("#btnFindProject").click(function () {
             var id = $("#txtFindProject").val();
-            debugger;
-            var lyr = returnGraveById(id);
+            //debugger;
+            var lyr = returnLayerById(id);
             if (lyr) {
                 if (lyrSearch) {
                     lyrSearch.remove();
                 }
-                lyrSearch = L.geoJSON(lyr.toGeoJSON(), { style: { color: 'red', weight: 10, opacity: 0.5 } }).addTo(mymap);
+                for (var i = 0; i < lyr.length - 1; i++) {
+
+                    L.geoJSON(lyr[i].toGeoJSON(), { style: { color: 'red', weight: 10, opacity: 0.5 } }).addTo(mymap);
+                }
                 mymap.fitBounds(lyr.getBounds().pad(5));
                 var att = lyr.feature.properties;
                 $("#divProjectData").html("ΠΕ : " + att.NAME_GR);
