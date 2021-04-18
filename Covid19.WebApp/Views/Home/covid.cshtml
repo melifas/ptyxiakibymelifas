@@ -149,15 +149,16 @@
                     $("#deathstodaypercent").html(parseInt(percentdeaths)+'%');
                 }
 
-                let newteststoday = statisticdata[11][statisticdata[11].length-1];
-                let newtestsyesterday = statisticdata[11][statisticdata[11].length-2];
+                let newteststoday = statisticdata[18][statisticdata[18].length-1];
+                let newtestsyesterday = statisticdata[18][statisticdata[18].length-2];
                 
                 let percenttests = Math.round(((newteststoday - newtestsyesterday) / newtestsyesterday)*100);
+
 
                 $("#newtesttoday").html(parseInt(newteststoday));
                 $("#newtesttodaypercent").html(parseInt(percenttests)+'%');
 
-                let total = statisticdata[15][statisticdata[15].length-1];
+                let total = statisticdata[19][statisticdata[19].length-1];
                 $("#totalfrombegin").html(parseInt(total));
 
 
